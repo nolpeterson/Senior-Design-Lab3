@@ -9,13 +9,21 @@
 
 ## 🚀 Quick start
 
-1.  **Create a Gatsby site.**
+1.  **Install dependencies.**
 
-    Use the Gatsby CLI to create a new site, specifying the minimal starter.
+    Use the shell/terminal to install these packages before starting.
 
-    ```shell
-    # create a new Gatsby site using the minimal starter
-    npm init gatsby
+    ```
+    npm install formik
+    ```
+    ```
+    npm install react-router-dom
+    ```
+    ```
+    npm install gatsby-react-router-scroll
+    ```
+    ```
+    npm install gatsby-link
     ```
 
 2.  **Start developing.**
@@ -23,7 +31,7 @@
     Navigate into your new site’s directory and start it up.
 
     ```shell
-    cd my-gatsby-site/
+    cd ...lab3
     npm run develop
     ```
 
