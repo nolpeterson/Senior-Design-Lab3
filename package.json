@@ -21,7 +21,9 @@
     "gatsby-link": "^4.1.0",
     "gatsby-react-router-scroll": "^5.1.0",
     "joi": "^17.4.2",
+    "moment": "^2.29.1",
     "react": "^16.14.0",
+    "react-big-calendar": "^0.38.1",
     "react-dom": "^16.14.0",
     "react-router-dom": "^6.0.2"
   }
