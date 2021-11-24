@@ -26,12 +26,7 @@ const Basic = () => (
           <Field id="lastName" name="lastName" placeholder="Doe" />
           <br/>
           <label htmlFor="email">Email</label>
-          <Field
-            id="email"
-            name="email"
-            placeholder="jane@acme.com"
-            type="email"
-          />
+          <Field id="email" name="email" placeholder="jane@acme.com" type="email"/>
           <button type="submit">Submit</button>
         </Form>
       </Formik>
