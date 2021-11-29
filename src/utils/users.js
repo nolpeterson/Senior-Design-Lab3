@@ -2,10 +2,13 @@ import { firestore } from "./firebase"
 
 const getUsers = async () => {
     const snapshot = await firestore.collection("users").get()
-    snapshot.docs.forEach(doc => console.log(doc.data()))
+    let users = []
+    snapshot.docs.forEach(doc => users.push(doc.data()))
+    users.forEach(user => console.log(user))
+    return users
 }
 
-const setUsers = async (mail, first, last, pass, user) => {
+const setUser = async (mail, first, last, pass, user) => {
     const userDb = firestore.collection('users').doc()
     await userDb.set({
         email: mail,
@@ -16,4 +19,10 @@ const setUsers = async (mail, first, last, pass, user) => {
     });
 }
 
-export {getUsers, setUsers}
+const getUserID = async (username) => {
+    const snapshot = await firestore.collection('users').where('username', '==', username).get()
+    snapshot.docs.forEach(doc => console.log(doc.id))
+    snapshot.docs.forEach(doc => {return doc.id})
+}
+
+export {getUsers, setUser, getUserID}
