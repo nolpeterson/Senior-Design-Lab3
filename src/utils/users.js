@@ -5,4 +5,15 @@ const getUsers = async () => {
     snapshot.docs.forEach(doc => console.log(doc.data()))
 }
 
-export {getUsers}
+const setUsers = async (mail, first, last, pass, user) => {
+    const userDb = firestore.collection('users').doc()
+    await userDb.set({
+        email: mail,
+        first_name: first,
+        last_name: last,
+        password: pass,
+        username: user
+    });
+}
+
+export {getUsers, setUsers}

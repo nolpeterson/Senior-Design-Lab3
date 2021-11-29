@@ -2,11 +2,12 @@ import * as React from "react"
 import { Link } from "gatsby"
 
 import Layout from "../components/layout"
-import { getUsers } from "../utils/users"
+import { getUsers, setUsers } from "../utils/users"
 
 const IndexPage = () => {
   React.useEffect(() => {
     getUsers()
+    //setUsers('ajung@email', 'Alex', 'Jung', 'pass', 'ajung1')
   }, [])
   
 
