@@ -2,12 +2,18 @@ import * as React from "react"
 import { Link } from "gatsby"
 
 import Layout from "../components/layout"
-import { getUsers, setUsers } from "../utils/users"
+import { getUsers, setUser, getUserID } from "../utils/users"
+import { getPolls, setPoll, getPollID } from "../utils/polls"
 
 const IndexPage = () => {
   React.useEffect(() => {
     getUsers()
-    //setUsers('ajung@email', 'Alex', 'Jung', 'pass', 'ajung1')
+    //setUser('ajung@email', 'Alex', 'Jung', 'pass', 'ajung1')
+    getPolls()
+    var date = new Date();
+    //setPoll(date, "alex house", "alex mean :(", )
+    getUserID('ajung1')
+    getPollID('rdean', 'Meeting')
   }, [])
   
 
