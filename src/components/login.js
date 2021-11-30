@@ -34,7 +34,7 @@ class Login extends React.Component {
                     // TODO: Routing to user control panel?
                     setTimeout(() => {
                         if (isLoggedIn()) {
-                            navigate('/TestCalendar')
+                            navigate('/dashboard')
                         }
                     }, 1000);
                     
