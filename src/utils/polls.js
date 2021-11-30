@@ -6,13 +6,13 @@ const getPolls = async () => {
     snapshot.docs.forEach(doc => console.log(doc.data()))
 }
 
-const setPoll = async (deadline, location, notes, owner_id, timezone, title, vote_limit_options, vote_limit_users) => {
+const setPoll = async (deadline, location, notes, username, timezone, title, vote_limit_options, vote_limit_users) => {
     const pollDb = firestore.collection('Polls').doc()
     await pollDb.set({
         deadline: deadline,
         location: location,
         notes: notes,
-        owner_id: owner_id,
+        owner_id: `/users/${getUserID(username)}`,
         timezone: timezone,
         title: title,
         vote_limit_options: vote_limit_options,
