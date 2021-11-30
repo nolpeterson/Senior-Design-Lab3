@@ -1,4 +1,5 @@
 import { firestore } from "./firebase"
+import { getPollID } from "./polls"
 
 const getEvents = async () => {
     const snapshot = await firestore.collection("events").get()
@@ -8,13 +9,13 @@ const getEvents = async () => {
     return events
 }
 
-const setEvent = async (datetime, lenght, participant_name, poll_id) => {
+const setEvent = async (datetime, lenght, participant_name, username, title) => {
     const userDb = firestore.collection('events').doc()
     await userDb.set({
         datetime: datetime,
         length: lenght,
         participant_name: participant_name,
-        poll_id: poll_id
+        poll_id: `/Polls/${getPollID(username, title)}`
     });
 }
 
