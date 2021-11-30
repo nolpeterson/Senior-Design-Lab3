@@ -32,9 +32,9 @@ const Basic = () => (
           if (Object.keys(values).length != 8) {
             alert(JSON.stringify("please fill out all form sections", null, 2));
           } else {
-            alert(JSON.stringify(values, null, 2));
             var date = new Date(values.deadline)
             setPoll(date, values.location, values.notes, values.username, values.timezone, values.title, values.votesPerTimeslot, values.votesPerUser)
+            alert(JSON.stringify(values, null, 2));
           }
         }}
       > 

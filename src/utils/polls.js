@@ -12,7 +12,7 @@ const setPoll = async (deadline, location, notes, username, timezone, title, vot
         deadline: deadline,
         location: location,
         notes: notes,
-        owner_id: `/users/${getUserID(username)}`,
+        owner_id: username,
         timezone: timezone,
         title: title,
         vote_limit_options: vote_limit_options,
