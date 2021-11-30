@@ -25,4 +25,12 @@ const getUserID = async (username) => {
     snapshot.docs.forEach(doc => {return doc.id})
 }
 
-export {getUsers, setUser, getUserID}
+const Login = async (username, password) => {
+    const snapshot = await firestore.collection('users').where('username', '==', username).where('password', '==', password).get()
+    var users = []
+    snapshot.docs.forEach(user => users.push(user))
+    console.log(users.length)
+    return (users.length == 1)
+}
+
+export {getUsers, setUser, getUserID, Login}

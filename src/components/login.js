@@ -21,7 +21,7 @@ class Login extends React.Component {
 
     render() {
         if (isLoggedIn()) {
-            // navigate(`/app/profile`)
+            //navigate(`/TestCalendar`)
 
         }
 
@@ -32,7 +32,7 @@ class Login extends React.Component {
                 onSubmit={event => {
                     this.handleSubmit(event)
                     // TODO: Routing to user control panel?
-                    navigate(`/app/profile`) 
+                    //navigate(`/TestCalendar`)
                 }}
             >
                 <label>
