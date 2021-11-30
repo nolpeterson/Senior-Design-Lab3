@@ -60,16 +60,23 @@ const Basic = () => (
 
           <div name = "timezone div">
           <br/>
-          <label> Timezone
-              <select name="timezone" id="timezone">
-                  <option defaultValue> -- Select Timezone -- </option>
-                  <option>Eastern</option>
-                  <option>Central</option>
-                  <option>Mountain</option>
-                  <option>Pacific</option>
-              </select>
-          </label>
+          <label htmlFor="timezone">Timezone</label>
+          <Field as="select" name="timezone" id="timezone">
+            <option value=""></option>
+            <option value="None">None</option>
+            <option value="Eastern">Eastern</option>
+            <option value="Central">Central</option>
+            <option value="Mountain">Mountain</option>
+            <option value="Pacific">Pacific</option>
+          </Field>
           <ErrorMessage name="timezone"/>
+          </div>
+
+          <div name = "deadline div">
+            <br/>
+            <label htmlFor="deadline">Deadline</label>
+            <Field type="datetime-local" id="deadline" name="deadline"/>
+            <br/>
           </div>
 
           <div name = "selectionDiv" style={{color: "red"}}>
