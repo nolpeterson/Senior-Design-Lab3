@@ -8,14 +8,14 @@ const getUsers = async () => {
     return users
 }
 
-const setUser = async (mail, first, last, pass, user) => {
+const setUser = async (email, first_name, last_name, password, username) => {
     const userDb = firestore.collection('users').doc()
     await userDb.set({
-        email: mail,
-        first_name: first,
-        last_name: last,
-        password: pass,
-        username: user
+        email: email,
+        first_name: first_name,
+        last_name: last_name,
+        password: password,
+        username: username
     });
 }
 
