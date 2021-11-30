@@ -4,6 +4,7 @@ import { Link } from "gatsby"
 import Layout from "../components/layout"
 import { getUsers, setUser, getUserID } from "../utils/users"
 import { getPolls, setPoll, getPollID } from "../utils/polls"
+import { getInvites, setInvite } from "../utils/invites"
 
 const IndexPage = () => {
   React.useEffect(() => {

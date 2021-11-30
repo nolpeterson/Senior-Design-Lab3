@@ -8,7 +8,7 @@ const getInvites = async () => {
     return invites
 }
 
-const setInvites = async (email, username, title) => {
+const setInvite = async (email, username, title) => {
     const userDb = firestore.collection('invites').doc()
     await userDb.set({
         Poll_id: `/Polls/${getPollID(username, title)}`,
@@ -16,4 +16,4 @@ const setInvites = async (email, username, title) => {
     });
 }
 
-export {getInvites, setInvites}
+export {getInvites, setInvite}
