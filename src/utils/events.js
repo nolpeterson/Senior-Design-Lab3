@@ -9,7 +9,7 @@ const getEvents = async () => {
 }
 
 const setEvent = async (datetime, lenght, participant_name, poll_id) => {
-    const userDb = firestore.collection('users').doc()
+    const userDb = firestore.collection('events').doc()
     await userDb.set({
         datetime: datetime,
         length: lenght,
