@@ -1,3 +1,5 @@
+import { Login } from "../utils/users"
+
 export const isBrowser = () => typeof window !== "undefined"
 
 export const getUser = () =>
@@ -8,8 +10,10 @@ export const getUser = () =>
 const setUser = user =>
     window.localStorage.setItem("gatsbyUser", JSON.stringify(user))
 
-export const handleLogin = ({ username, password }) => {
-    if (username === `seniordesign` && password === `4880`) {
+export const handleLogin = async ({ username, password }) => {
+    console.log('test1')
+    if ( await Login(username, password)) {
+        console.log('yay')
         return setUser({
             username: `seniordesign`,
             name: `SeniorDesign`,

@@ -1,6 +1,6 @@
 import React from "react"
 import { navigate } from "gatsby"
-import { handleLogin, isLoggedIn } from "../services/auth"
+import { handleLogin, isLoggedIn, logout } from "../services/auth"
 
 class Login extends React.Component {
     state = {
@@ -21,8 +21,8 @@ class Login extends React.Component {
 
     render() {
         if (isLoggedIn()) {
-            // navigate(`/app/profile`)
-
+            logout(() => navigate('/loginPage'))
+            console.log(isLoggedIn())
         }
 
         return (<>
@@ -32,7 +32,12 @@ class Login extends React.Component {
                 onSubmit={event => {
                     this.handleSubmit(event)
                     // TODO: Routing to user control panel?
-                    navigate(`/app/profile`) 
+                    setTimeout(() => {
+                        if (isLoggedIn()) {
+                            navigate('/TestCalendar')
+                        }
+                    }, 1000);
+                    
                 }}
             >
                 <label>
