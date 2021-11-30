@@ -3,6 +3,8 @@ import { Formik, Field, Form, ErrorMessage  } from 'formik';
 import { Link } from "gatsby"
 import Layout from '../components/layout';
 import * as Yup from 'yup';
+import { getUser } from '../services/auth';
+import { setPoll } from '../utils/polls';
 
 const timezones = ["Eastern", "Central", "Mountain", "Pacific"];
 
@@ -22,18 +24,18 @@ const Basic = () => (
         alignItems: 'center',}}>
       <Formik
         initialValues={{
-          title: '',
-          location: '',
-          notes: '',
-          timezone: '',
-          startDate: new Date(), // Start date is the current time of poll creation
-          votesPerTimeslot: '',
-          votesPerUser: '' 
+          username: getUser().username,
         }}
         validationSchema={PollSchema}
         onSubmit={async (values) => {
           console.log(values); // Log the poll schema to console
-          alert(JSON.stringify(values, null, 2)); // Show popup for schema TESTING
+          if (Object.keys(values).length != 8) {
+            alert(JSON.stringify("please fill out all form sections", null, 2));
+          } else {
+            alert(JSON.stringify(values, null, 2));
+            var date = new Date(values.deadline)
+            setPoll(date, values.location, values.notes, values.username, values.timezone, values.title, values.votesPerTimeslot, values.votesPerUser)
+          }
         }}
       > 
       {({ errors, touched }) => (
@@ -87,14 +89,14 @@ const Basic = () => (
           <div name = "votesTimeDiv">
           <br/>
           <label htmlFor="votesPerTimeslot">Votes Per Timeslot</label>
-          <Field id="votesPerTimeslot" name="votesPerTimeslot"/>
+          <Field type="number" id="votesPerTimeslot" name="votesPerTimeslot"/>
           <ErrorMessage name="votesPerTimeslot"/>
           </div>
 
           <div name = "votesUserDiv">
           <br/>
           <label htmlFor="votesPerUser">Votes Per User</label>
-          <Field id="votesPerUser" name="votesPerUser"/>
+          <Field type="number" id="votesPerUser" name="votesPerUser"/>
           <ErrorMessage name="votesPerUser"/>
           </div>
 
@@ -106,7 +108,7 @@ const Basic = () => (
           <div name = "pubAndCancelDiv">
           <br/>
           <button type="submit">Publish Poll</button>
-          <Link to="/">Cancel</Link>
+          <Link to="/dashboard">Cancel</Link>
           </div>
         </Form>
         )}
