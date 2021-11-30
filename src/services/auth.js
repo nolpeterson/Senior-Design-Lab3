@@ -1,4 +1,4 @@
-import { Login } from "../utils/users"
+import { Login, getUserID } from "../utils/users"
 
 export const isBrowser = () => typeof window !== "undefined"
 
@@ -15,9 +15,7 @@ export const handleLogin = async ({ username, password }) => {
     if ( await Login(username, password)) {
         console.log('yay')
         return setUser({
-            username: `seniordesign`,
-            name: `SeniorDesign`,
-            email: `seniordesign@example.org`,
+            username: username
         })
     }
 
