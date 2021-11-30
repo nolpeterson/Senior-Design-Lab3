@@ -5,6 +5,7 @@ import Layout from "../components/layout"
 import { getUsers, setUser, getUserID } from "../utils/users"
 import { getPolls, setPoll, getPollID } from "../utils/polls"
 import { getInvites, setInvite } from "../utils/invites"
+import { getEvents, setEvent } from "../utils/events"
 
 const IndexPage = () => {
   React.useEffect(() => {
@@ -15,6 +16,8 @@ const IndexPage = () => {
     //setPoll(date, "alex house", "alex mean :(", )
     getUserID('ajung1')
     getPollID('rdean', 'Meeting')
+    getInvites()
+    getEvents()
   }, [])
   
 
