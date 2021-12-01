@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useTable } from 'react-table'
+import { getUser } from '../services/auth';
+import { getPollsUser } from '../utils/polls';
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -43,6 +45,13 @@ function Table({ columns, data }) {
 }
 
 function App() {
+const [data, setData] = useState([]);
+
+  React.useEffect(async () => {
+    var temp = await getPollsUser(getUser().username)
+    setData(temp)
+  }, [])
+
   const columns = React.useMemo(
     () => [
       {
@@ -50,7 +59,7 @@ function App() {
         columns: [
           {
             Header: 'Poll Name',
-            accessor: 'pollName',
+            accessor: 'title',
           },
           {
             Header: 'Link',
@@ -61,9 +70,6 @@ function App() {
     ],
     []
   )
-
-// TODO: Need to populate the table with data to show
-const data = []
 
   return (
       <Table columns={columns} data={data} />
