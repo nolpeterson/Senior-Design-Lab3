@@ -4,6 +4,7 @@ import { getUser } from '../services/auth';
 import { getEventPollID, getEvents } from '../utils/events';
 import { getPollID } from '../utils/polls';
 import { getParameterByName } from '../utils/url';
+import { createDateRange, createDatetime } from '../utils/datetime';
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -56,6 +57,9 @@ const [data, setData] = useState([]);
     console.log(title)
     console.log(owner)
     var temp = await getEventPollID(owner, title)
+    var test = []
+    temp.forEach(data => data.datetime = createDateRange(data.datetime.seconds, data.length))
+    console.log(test)
     console.log(temp)
     setData(temp)
   }, [])
@@ -66,8 +70,19 @@ const [data, setData] = useState([]);
         Header: 'Events',
         columns: [
           {
-            Header: 'Participant Name',
+            Header: participant => 'Participant Name',
             accessor: 'participant_name',
+            Cell: participant => {
+              if (participant.value == "") {
+                return <input type="text" defaultValue={participant.value}/>
+              } else {
+                return <input type="text" defaultValue={participant.value} disabled/>
+              }
+            }
+          },
+          {
+            Header: 'Start - End',
+            accessor: 'datetime'
           },
           {
             Header: 'Link',

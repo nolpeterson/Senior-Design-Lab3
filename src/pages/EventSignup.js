@@ -15,18 +15,9 @@ const dashboard = () => (
 
       {/* "My Polls Text" */}
       <div style={{ float: "left" }}>
-        <h1>My Polls</h1>
+        <h1>Signup</h1>
       </div>
 
-      {/* Create new poll button */}
-      <div style={{ float: "right" , marginTop: "10px" }}> 
-        <Link to="/createPoll/">
-          <button>
-            Create New Poll
-          </button>
-        </Link>
-      </div>
-      <br></br><br></br>
     </div>
 
     {/* List of user's polls */}
