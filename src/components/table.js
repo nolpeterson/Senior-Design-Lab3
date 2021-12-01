@@ -60,11 +60,12 @@ const [data, setData] = useState([]);
           {
             Header: 'Poll Name',
             accessor: 'title',
+            Cell: e =><a href={"EventSignup?title=" + e.value + "?owner_id=" +  e.row.original['owner_id']}> {e.value}</a>
+
           },
           {
-            Header: 'Link',
-            accessor: 'notes',
-            Cell: e =><a href={"EventSignup?title=" + e.row.original['title']}> {e.value}</a>
+            Header: 'Owner',
+            accessor: 'owner_id',
           },
         ],
       }

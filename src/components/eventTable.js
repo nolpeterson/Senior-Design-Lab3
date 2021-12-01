@@ -52,8 +52,10 @@ const [data, setData] = useState([]);
   React.useEffect(async () => {
     console.log(await getEvents())
     var title = getParameterByName('title')
+    var owner = getParameterByName('owner_id')
     console.log(title)
-    var temp = await getEventPollID(getUser().username, title)
+    console.log(owner)
+    var temp = await getEventPollID(owner, title)
     console.log(temp)
     setData(temp)
   }, [])
