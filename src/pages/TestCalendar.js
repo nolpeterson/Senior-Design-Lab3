@@ -7,19 +7,25 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
 
-const MyCalendar = () => (
-    <Layout>
-        <div>
-            <Calendar
-            events={events}
-            style={{ height: "100vh" }} 
-            views={['month', 'week', 'day']}
-            localizer={localizer}
-            startAccessor="start"
-            endAccessor="end"
-            />
-        </div>
-    </Layout>
-)
+const MyCalendar = () => {
+    React.useEffect(() => {
+        console.log(sessionStorage.getItem("PollID"))
+    }, [])
+
+    return (
+        <Layout>
+            <div>
+                <Calendar
+                events={events}
+                style={{ height: "100vh" }} 
+                views={['month', 'week', 'day']}
+                localizer={localizer}
+                startAccessor="start"
+                endAccessor="end"
+                />
+            </div>
+        </Layout>
+    )
+}
 
 export default MyCalendar

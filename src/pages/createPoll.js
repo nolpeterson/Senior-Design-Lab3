@@ -4,7 +4,9 @@ import { Link } from "gatsby"
 import Layout from '../components/layout';
 import * as Yup from 'yup';
 import { getUser } from '../services/auth';
-import { setPoll } from '../utils/polls';
+import { getPollID, setPoll } from '../utils/polls';
+import { getUserID } from '../utils/users';
+import { navigate } from '@reach/router';
 
 const PollSchema = Yup.object().shape({
   title: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
@@ -46,8 +48,13 @@ const Basic = () => (
         onSubmit={async (values) => {
           console.log(values); // Log the poll schema to console
           var date = new Date(values.deadline)
-          setPoll(date, values.location, values.notes, values.username, values.timezone, values.title, values.votesPerTimeslot, values.votesPerUser, values.numDays, values.numEvents, values.lengthEvents, values.startingDate, values.endingDate)
-          alert(JSON.stringify(values, null, 2));
+          var PollID = await setPoll(date, values.location, values.notes, values.username, values.timezone, values.title, values.votesPerTimeslot, values.votesPerUser, values.numDays, values.numEvents, values.lengthEvents, values.startingDate, values.endingDate)
+          //alert(JSON.stringify(values, null, 2));
+          setTimeout(() => {
+            console.log(PollID)
+            sessionStorage.setItem("PollID",PollID);
+            navigate('/TestCalendar')
+          }, 1000);
         }}
       > 
       {({ errors, touched }) => (
@@ -77,6 +84,7 @@ const Basic = () => (
             <label htmlFor="timezone">Timezone</label>
             <Field as="select" name="timezone" id="timezone">
               <option value=""></option>
+              <option value="None">None</option>
               <option value="Eastern">Eastern</option>
               <option value="Central">Central</option>
               <option value="Mountain">Mountain</option>

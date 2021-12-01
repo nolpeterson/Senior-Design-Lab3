@@ -18,6 +18,7 @@ const setPoll = async (deadline, location, notes, username, timezone, title, vot
         vote_limit_options: vote_limit_options,
         vote_limit_user: vote_limit_users
     });
+    return pollDb.id
 }
 
 const getPollID = async (username, title) => {
