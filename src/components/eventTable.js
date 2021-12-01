@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { useTable } from 'react-table'
 import { getUser } from '../services/auth';
-import { getPollsUser } from '../utils/polls';
+import { getEventPollID, getEvents } from '../utils/events';
+import { getPollID } from '../utils/polls';
+import { getParameterByName } from '../utils/url';
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -48,23 +50,27 @@ function App() {
 const [data, setData] = useState([]);
 
   React.useEffect(async () => {
-    var temp = await getPollsUser(getUser().username)
+    console.log(await getEvents())
+    var title = getParameterByName('title')
+    console.log(title)
+    var temp = await getEventPollID(getUser().username, title)
+    console.log(temp)
     setData(temp)
   }, [])
 
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Polls',
+        Header: 'Events',
         columns: [
           {
-            Header: 'Poll Name',
-            accessor: 'title',
+            Header: 'Participant Name',
+            accessor: 'participant_name',
           },
           {
             Header: 'Link',
-            accessor: 'notes',
-            Cell: e =><a href={"EventSignup?title=" + e.row.original['title']}> {e.value}</a>
+            accessor: 'length',
+            Cell: e =><a href={"dashboard?" + e.value}> {e.value}</a>
           },
         ],
       }

@@ -21,7 +21,6 @@ const setUser = async (email, first_name, last_name, password, username) => {
 
 const getUserID = async (username) => {
     const snapshot = await firestore.collection('users').where('username', '==', username).get()
-    snapshot.docs.forEach(doc => console.log(doc.id))
     snapshot.docs.forEach(doc => {return doc.id})
 }
 

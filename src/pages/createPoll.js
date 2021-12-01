@@ -116,10 +116,10 @@ const Basic = () => (
             <Field as="select" name="timezone" id="timezone">
               <option value=""></option>
               <option value="None">None</option>
-              <option value="Eastern">Eastern</option>
-              <option value="Central">Central</option>
-              <option value="Mountain">Mountain</option>
-              <option value="Pacific">Pacific</option>
+              <option value="Eastern">Eastern(GMT-6)</option>
+              <option value="Central">Central(GMT-7)</option>
+              <option value="Mountain">Mountain(GMT-8)</option>
+              <option value="Pacific">Pacific(GMT-9)</option>
             </Field>
             <ErrorMessage name="timezone">
               { msg => <div style={{ color: 'red' }}>{msg}</div> }
