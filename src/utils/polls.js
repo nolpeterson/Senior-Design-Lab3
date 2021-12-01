@@ -6,6 +6,13 @@ const getPolls = async () => {
     snapshot.docs.forEach(doc => console.log(doc.data()))
 }
 
+export const getPollsUser = async (username) => {
+    const snapshot = await firestore.collection("Polls").where("owner_id", "==", `${username}`).get()
+    let userPolls = []
+    snapshot.docs.forEach(doc => userPolls.push(doc.data()))
+    return userPolls
+}
+
 const setPoll = async (deadline, location, notes, username, timezone, title, vote_limit_options, vote_limit_users) => {
     const pollDb = firestore.collection('Polls').doc()
     await pollDb.set({
@@ -22,7 +29,7 @@ const setPoll = async (deadline, location, notes, username, timezone, title, vot
 }
 
 const getPollID = async (username, title) => {
-    const snapshot = await firestore.collection('Polls').where('owner_id', '==', `/users/${getUserID(username)}`).where('title', '==', title).get()
+    const snapshot = await firestore.collection('Polls').where('owner_id', '==', `${username}`).where('title', '==', title).get()
     snapshot.docs.forEach(doc => console.log(doc.id))
     snapshot.docs.forEach(doc => {return doc.id})
 }
