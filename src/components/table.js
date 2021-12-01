@@ -63,7 +63,8 @@ const [data, setData] = useState([]);
           },
           {
             Header: 'Link',
-            accessor: 'link',
+            accessor: 'notes',
+            Cell: e =><a href={"EventSignup?title=" + e.row.original['title']}> {e.value}</a>
           },
         ],
       }

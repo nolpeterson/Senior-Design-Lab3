@@ -3,6 +3,7 @@ import { useTable } from 'react-table'
 import { getUser } from '../services/auth';
 import { getEventPollID, getEvents } from '../utils/events';
 import { getPollID } from '../utils/polls';
+import { getParameterByName } from '../utils/url';
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -50,7 +51,9 @@ const [data, setData] = useState([]);
 
   React.useEffect(async () => {
     console.log(await getEvents())
-    var temp = await getEventPollID("rdean", "title")
+    var title = getParameterByName('title')
+    console.log(title)
+    var temp = await getEventPollID(getUser().username, title)
     console.log(temp)
     setData(temp)
   }, [])
@@ -66,7 +69,8 @@ const [data, setData] = useState([]);
           },
           {
             Header: 'Link',
-            accessor: 'link',
+            accessor: 'length',
+            Cell: e =><a href={"dashboard?" + e.value}> {e.value}</a>
           },
         ],
       }
