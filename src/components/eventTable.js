@@ -4,7 +4,7 @@ import { getUser } from '../services/auth';
 import { getEventPollID, getEvents, updateEvent } from '../utils/events';
 import { getPollID } from '../utils/polls';
 import { getParameterByName } from '../utils/url';
-import { createDateRange, createDatetime } from '../utils/datetime';
+import { createDateRange, createDatetime, createUpdatedDateRange } from '../utils/datetime';
 import { Formik, Field, Form, ErrorMessage  } from 'formik';
 
 var globalOwner = ""
@@ -76,7 +76,7 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
     console.log(owner)
     var temp = await getEventPollID(owner, title)
     console.log(temp)
-    temp[0].forEach(data => data.datetime = createDateRange(data.datetime.seconds, data.length))
+    temp[0].forEach(data => data.datetime = createUpdatedDateRange(data.datetime.seconds, data.length.seconds))
     console.log(temp[0])
     globalIDs = temp[1]
     setData(temp[0])
