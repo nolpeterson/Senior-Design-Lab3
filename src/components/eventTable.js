@@ -136,6 +136,7 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
                       updateEvent(eventID, participant)
                     } else {
                       console.log(false)
+                      alert(JSON.stringify("You have signed up for too many polls!", null, 2));
                     }
                     setTimeout(() => {
                       window.location.reload();
