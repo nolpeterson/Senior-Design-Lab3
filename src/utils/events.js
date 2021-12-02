@@ -12,8 +12,10 @@ const getEvents = async () => {
 export const getEventPollID = async (username, poll_title) => {
     const snapshot = await firestore.collection("events").where("owner", "==", `${username}`).where("poll", "==", `${poll_title}`).get()
     let events = []
+    let eventIDs = []
     snapshot.docs.forEach(doc => events.push(doc.data()))
-    return events
+    snapshot.docs.forEach(doc => eventIDs.push(doc.id))
+    return [events, eventIDs]
 }
 
 const setEvent = async (datetime, lenght, participant_name, username, title) => {
@@ -25,6 +27,13 @@ const setEvent = async (datetime, lenght, participant_name, username, title) => 
         owner: username,
         poll: title
     });
+}
+
+export const updateEvent = async (ID, name) => {
+    console.log(ID)
+    const eventDb = firestore.collection('events').doc(ID)
+    console.log(eventDb)
+    await eventDb.update({participant_name: name})
 }
 
 export {getEvents, setEvent}
