@@ -84,7 +84,9 @@ return (
           }, 500);
           var emails = values.emailInvites.split(', ')
           console.log(emails)
-          emails.forEach(email => emailjs.send("service_4da7hz1","template_ixccgdi",{reply_to: email},"user_C9QFMXD2JTZf0mLcSM271")
+          var url = window.location.href.substr(0, window.location.href.length - 10) + "EventSignup?title=" + values.title + "?owner_id=" +  values.username
+          console.log(url)
+          emails.forEach(email => emailjs.send("service_4da7hz1","template_ixccgdi",{reply_to: email, message: url},"user_C9QFMXD2JTZf0mLcSM271")
             .then(
               (result) => {
                 console.log(result.text);
