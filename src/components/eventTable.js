@@ -134,6 +134,7 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
                     if (validator) {
                       console.log(true)
                       updateEvent(eventID, participant)
+                      alert(JSON.stringify( `${participant} has signed up` , null, 2));
                     } else {
                       console.log(false)
                       alert(JSON.stringify("You have signed up for too many polls!", null, 2));
