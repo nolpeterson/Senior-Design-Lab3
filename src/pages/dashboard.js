@@ -5,13 +5,7 @@ import Table from "../components/table";
 
 const dashboard = () => (
   <Layout>
-      <div
-      style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        // padding: `1.75rem 1.0875rem`,
-      }}
-      >
+      <div style={{margin: `0 auto`,maxWidth: 960,}}>
 
       {/* "My Polls Text" */}
       <div style={{ float: "left" }}>
