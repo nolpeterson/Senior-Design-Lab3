@@ -1,31 +1,32 @@
-import React, { Fragment } from "react";
-import emailjs from "emailjs-com";
+import { SMTPClient } from 'emailjs';
 
-const sendEmail = () => {
-  function sendEmail(e) {
-    e.preventDefault();
-    emailjs
-      .sendForm("service_4da7hz1","template_ixccgdi",e.target,"user_C9QFMXD2JTZf0mLcSM271")
-      .then(
-        (result) => {
-          console.log(result.text);
-        },
-        (error) => {
-          console.log(error.text);
-        }
-      );
-  }
+const client = new SMTPClient({
+	user: 'user',
+	password: 'password',
+	host: 'smtp.your-email.com',
+	ssl: true,
+});
 
-  return (
-    <Fragment>
-      <form className="contact-form" onSubmit={sendEmail}>
-        <input type="hidden" name="contact_number" />
-        <label>Email</label>
-        <input type="email" name="from_email" />
-        <input type="submit" value="Send" />
-      </form>
-    </Fragment>
-  );
-};
+// send the message and get a callback with an error or details of the message that was sent
+export function sendEmail(emails) {
+  emails.forEach(email => {
+    email = '<' + email + '>'
+  });
+  var str = ""
+  emails.forEach(email => str = str + email + ', ')
+  str = str.substring(0, str.length - 2);
+  console.log(str)
 
-export default sendEmail;
+  
+  // client.send(
+  //   {
+  //     text: 'i hope this works',
+  //     from: 'you <username@your-email.com>',
+  //     to: 'someone <someone@your-email.com>, another <another@your-email.com>',
+  //     subject: 'testing emailjs',
+  //   },
+  //   (err, message) => {
+  //     console.log(err || message);
+  //   }
+  // );
+}
