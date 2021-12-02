@@ -18,8 +18,11 @@ const PollSchema = Yup.object().shape({
   location: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
   timezone: Yup.string().required('Required'),
   deadline: Yup.string().required('Required').nullable(),
+  startEvent: Yup.string().required('Required').nullable(),
+  endEvent: Yup.string().required('Required').nullable(),
   votesPerTimeslot: Yup.number().required('Required').min(1, 'Minimum votes are 1'),
   votesPerUser: Yup.number().required('Required').min(1, 'Minimum votes are 1'),
+  eventTitle: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
   // numDays: Yup.number().required('Required').min(1, 'Minimum days is 1'),
   // numEvents: Yup.number().required('Required').min(1, 'Minimum events is 1'),
   // lengthEvents: Yup.number().required('Required').min(5, 'Minimum length is 5 minutes'),
@@ -41,9 +44,8 @@ function Basic() {
 return (
   <Layout>
     <h1>Create Poll</h1>
-    <div style={{display: "flex", 
-        justifyContent: 'center',
-        alignItems: 'center',}}>
+    <h6>* indicates required field.</h6>
+    <div style={{display: "flex", justifyContent: 'center',alignItems: 'center',}}>
       <Formik
         initialValues={{
           username: getUser().username,
@@ -52,6 +54,9 @@ return (
           notes: '',
           timezone: '',
           deadline: '',
+          endEvent: '',
+          startEvent: '',
+          eventTitle: '',
           votesPerTimeslot: '',
           votesPerUser: '',
           numDays: '1',
@@ -62,7 +67,7 @@ return (
         }}
         validationSchema={PollSchema}
         onSubmit={async (values) => {
-          console.log(values); // Log the poll schema to console
+          console.log(values);
           var date = new Date(values.deadline)
           var PollID = await setPoll(date, values.location, values.notes, values.username, values.timezone, values.title, values.votesPerTimeslot, values.votesPerUser, values.numDays, values.numEvents, values.lengthEvents, values.startingDate, values.endingDate)
           //alert(JSON.stringify(values, null, 2));
@@ -77,7 +82,8 @@ return (
         <Form>
           <div name = "titleDiv" style = {{display: "flex", flexDirection: "column ", border: "3px solid #eee", borderRadius: "15px", padding: "20px"}}> 
             <h3>Step 1:</h3>
-            <label htmlFor="title">Poll Title</label>
+            <h4>What is this poll about?</h4>
+            <label htmlFor="title">Poll Title*</label>
             <Field id="title" name="title" style = {{width: "25%"}}/>
             <ErrorMessage name="title">
               { msg => <div style={{ color: 'red' }}>{msg}</div> }
@@ -95,7 +101,8 @@ return (
 
           <div name = "timezone div" style = {{display: "flex", flexDirection: "column ", border: "3px solid #eee", borderRadius: "15px", padding: "20px"}}>
           <h3>Step 2:</h3>
-            <label htmlFor="timezone">Timezone</label>
+          <h4>Specifiy meeting timezone.</h4>
+            <label htmlFor="timezone">Timezone*</label>
             <Field as="select" name="timezone" id="timezone" style = {{width: "25%"}}>
               <option style={{display:"none"}} value="">select a timezone</option>
               <option value="Eastern">Eastern(GMT-6)</option>
@@ -108,30 +115,50 @@ return (
             </ErrorMessage>
           </div>
           <br/>
-
-          <div name="calendar" style = {{display: "flex", flexDirection: "column ", border: "3px solid #eee", borderRadius: "15px", padding: "20px"}}>
-            <div>
-            <h3>Step 3:</h3>
-              Create meeting times and dates. You can add multiple events.<br/>
-              <input type="text" placeholder="Event Title" style={{ width: "25%"}} value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
-              <DatePicker showTimeSelect dateFormat="MM/dd/yyyy h:mm aa" timeIntervals={5} placeholderText="Start Date" selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start })} />
-              <DatePicker showTimeSelect dateFormat="MM/dd/yyyy h:mm aa" timeIntervals={5} placeholderText="End Date" selected={newEvent.end} onChange={(end) => setNewEvent({ ...newEvent, end })} />
-              <button type="button" stlye={{ marginTop: "10px" }} onClick={handleAddEvent}>Add Event</button>
+          
+          <div name="calendar" style = {{ border: "3px solid #eee", borderRadius: "15px", padding: "20px", marginTop: "10px"}}>
+            <h3>Step 3:</h3> 
+            <h4>Create event(s). You can add multiple events, with unique dates and times<br/> You must specify at least one event</h4>
+            <div name="eventOptions" style = {{ border: "3px solid #eee", borderRadius: "15px", padding: "20px", marginTop: "10px"}}>
+              <label htmlFor="eventTitle">Event Title*</label>
+              <br/>
+              <input name="eventTitle" type="text" style={{ width: "25%"}} value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
+              <ErrorMessage name="eventTitle">
+                { msg => <div style={{ color: 'red' }}>{msg}</div> }
+              </ErrorMessage>
+              <br/><br/>
+              <label htmlFor="startEvent">Event start date*</label>
+              <DatePicker name="startEvent" showTimeSelect dateFormat="MM/dd/yyyy h:mm aa" timeIntervals={5} placeholderText="Choose a start date" selected={newEvent.start} 
+                onChange={(start) => setNewEvent({ ...newEvent, start })} withPortal/>
+              <ErrorMessage name="startEvent">
+                { msg => <div style={{ color: 'red' }}>{msg}</div> }
+              </ErrorMessage>
+              <br/>
+              <label htmlFor="endEvent">Event end date*</label>
+              <DatePicker name="endEvent" showTimeSelect dateFormat="MM/dd/yyyy h:mm aa" timeIntervals={5} placeholderText="Choose an end date" selected={newEvent.end} 
+                onChange={(end) => setNewEvent({ ...newEvent, end })} withPortal/>
+              <ErrorMessage name="endEvent">
+                { msg => <div style={{ color: 'red' }}>{msg}</div> }
+              </ErrorMessage>
+              <br/>
+              <button type="button" stlye={{ alignSelf: "flex-start"}} onClick={handleAddEvent}>Add Event</button>
             </div>
+            <br/>
             <Calendar localizer={localizer} events={allEvents} startAccessor="start" endAccessor="end" style={{ height: '50vh'}} />
           </div>
           <br/>
           
           <div name = "votesTimeDiv" style = {{display: "flex", flexDirection: "column ", border: "3px solid #eee", borderRadius: "15px", padding: "20px"}}>
             <h3>Step 4:</h3>
-            <label htmlFor="votesPerTimeslot">Number of votes Per Timeslot</label>
+            <h4>How many votes do you want users to have?</h4>
+            <label htmlFor="votesPerTimeslot">Number of votes Per Timeslot*</label>
             <Field type="number" id="votesPerTimeslot" name="votesPerTimeslot" style = {{width: "10%"}}/>
             <ErrorMessage name="votesPerTimeslot">
               { msg => <div style={{ color: 'red' }}>{msg}</div> }
             </ErrorMessage>
 
             <br/>
-            <label htmlFor="votesPerUser">Number of votes Per User</label>
+            <label htmlFor="votesPerUser">Number of votes Per User*</label>
             <Field type="number" id="votesPerUser" name="votesPerUser" style = {{width: "10%"}}/>
             <ErrorMessage name="votesPerUser">
               { msg => <div style={{ color: 'red' }}>{msg}</div> }
@@ -141,7 +168,8 @@ return (
 
           <div name = "deadline div" style = {{display: "flex", flexDirection: "column ", border: "3px solid #eee", borderRadius: "15px", padding: "20px"}}>
             <h3>Step 5:</h3>
-            <label htmlFor="deadline">Poll voting deadline</label>
+            <h4>When do you want voting to finish?</h4>
+            <label htmlFor="deadline">Poll voting deadline*</label>
             <DatePicker
               showTimeSelect 
               dateFormat="MM/dd/yyyy h:mm aa"
@@ -158,15 +186,20 @@ return (
 
           <div name = "inviteDiv" style = {{border: "3px solid #eee", borderRadius: "15px", padding: "20px"}}>
             <h3>Step 6:</h3>
+            <h4>Send invites to the poll.</h4>
             <button type="button">Invite Users</button>
           </div>
           <br/>
 
-          <div name = "pubAndCancelDiv" style = {{border: "3px solid #eee", borderRadius: "15px", padding: "20px"}}>
+          <div name = "pubAndCancelDiv" style = {{border: "3px solid #eee", borderRadius: "15px", padding: "20px", overflow: "auto"}}>
             <h3>Step 7:</h3>
-            <button type="submit">Publish Poll</button>
-            <br/>
-            <Link to="/dashboard">Cancel Poll</Link>
+            <h4>And on the 7th day, god made this poll, probaly.</h4>
+            <div style={{ float: "left"}}> 
+              <button type="submit">Publish Poll</button>
+            </div>
+            <div style={{marginInline:"150px"}}>
+              <Link to="/dashboard">Cancel Poll</Link>
+            </div>
           </div>
         </Form>
         )}

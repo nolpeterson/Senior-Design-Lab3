@@ -29,7 +29,7 @@ const Login = async (username, password) => {
     var users = []
     snapshot.docs.forEach(user => users.push(user))
     console.log(users.length)
-    return (users.length == 1)
+    return (users.length === 1)
 }
 
 export {getUsers, setUser, getUserID, Login}

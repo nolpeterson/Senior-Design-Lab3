@@ -5,13 +5,7 @@ import Table from "../components/eventTable";
 
 const dashboard = () => (
   <Layout>
-      <div
-      style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        // padding: `1.75rem 1.0875rem`,
-      }}
-      >
+      <div style={{margin: `0 auto`,maxWidth: 960}}>
 
       {/* "My Polls Text" */}
       <div style={{ float: "left" }}>
@@ -27,6 +21,11 @@ const dashboard = () => (
         </Link>
       </div>
       <br></br><br></br>
+    </div>
+
+    <br/>
+    <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+      <Link to="/dashboard/">Go back to dashboard</Link>
     </div>
 
     {/* List of user's polls */}

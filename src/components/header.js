@@ -11,29 +11,12 @@ if (isLoggedIn()) {
 }
 
 const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      background: `#557A95`,
-      marginBottom: `1.5rem`,
-    }}
-  >
-    <div
-      style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `3rem 1.0875rem`,
-      }}
-    >
-
+  <header style={{background: `#557A95`,marginBottom: `1.5rem`}}>
+    <div style={{margin: `0 auto`,maxWidth: 960, padding: `3rem 1.0875rem`}}>
       {/* Site title with clickable link to homepage */}
       <div id="SiteName" style={{ float: "left" }}>
         <h1> 
-          <Link to="/"
-            style={{
-              color: `white`,
-              textDecoration: `none`,
-            }}
-          >
+          <Link to="/" style={{color: `white`,textDecoration: `none`}}>
             {siteTitle}
           </Link>
         </h1>

@@ -15,6 +15,11 @@ const MyCalendar = () => {
 
     return (
         <Layout>
+            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+                <Link to="/dashboard/">Go back to dashboard</Link>
+            </div>
+
+            <br/>
             <div>
                 <Calendar
                 events={events}
@@ -24,10 +29,6 @@ const MyCalendar = () => {
                 startAccessor="start"
                 endAccessor="end"
                 />
-            </div>
-
-            <div>
-                <Link to="/dashboard">Back to dashboard</Link>
             </div>
         </Layout>
     )
