@@ -18,11 +18,11 @@ const PollSchema = Yup.object().shape({
   location: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
   timezone: Yup.string().required('Required'),
   deadline: Yup.string().required('Required').nullable(),
-  startEvent: Yup.string().required('Required').nullable(),
-  endEvent: Yup.string().required('Required').nullable(),
+  // startEvent: Yup.string().required('Required').nullable(),
+  // endEvent: Yup.string().required('Required').nullable(),
   votesPerTimeslot: Yup.number().required('Required').min(1, 'Minimum votes are 1'),
   votesPerUser: Yup.number().required('Required').min(1, 'Minimum votes are 1'),
-  eventTitle: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
+  // eventTitle: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
   // numDays: Yup.number().required('Required').min(1, 'Minimum days is 1'),
   // numEvents: Yup.number().required('Required').min(1, 'Minimum events is 1'),
   // lengthEvents: Yup.number().required('Required').min(5, 'Minimum length is 5 minutes'),
@@ -74,7 +74,7 @@ return (
           setTimeout(() => {
             console.log(PollID)
             sessionStorage.setItem("PollID",PollID);
-            navigate('/TestCalendar')
+            navigate('/dashboard')
           }, 1000);
         }}
       > 
@@ -123,23 +123,23 @@ return (
               <label htmlFor="eventTitle">Event Title*</label>
               <br/>
               <input name="eventTitle" type="text" style={{ width: "25%"}} value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
-              <ErrorMessage name="eventTitle">
+              {/* <ErrorMessage name="eventTitle">
                 { msg => <div style={{ color: 'red' }}>{msg}</div> }
-              </ErrorMessage>
+              </ErrorMessage> */}
               <br/><br/>
               <label htmlFor="startEvent">Event start date*</label>
               <DatePicker name="startEvent" showTimeSelect dateFormat="MM/dd/yyyy h:mm aa" timeIntervals={5} placeholderText="Choose a start date" selected={newEvent.start} 
                 onChange={(start) => setNewEvent({ ...newEvent, start })} withPortal/>
-              <ErrorMessage name="startEvent">
+              {/* <ErrorMessage name="startEvent">
                 { msg => <div style={{ color: 'red' }}>{msg}</div> }
-              </ErrorMessage>
+              </ErrorMessage> */}
               <br/>
               <label htmlFor="endEvent">Event end date*</label>
               <DatePicker name="endEvent" showTimeSelect dateFormat="MM/dd/yyyy h:mm aa" timeIntervals={5} placeholderText="Choose an end date" selected={newEvent.end} 
                 onChange={(end) => setNewEvent({ ...newEvent, end })} withPortal/>
-              <ErrorMessage name="endEvent">
+              {/* <ErrorMessage name="endEvent">
                 { msg => <div style={{ color: 'red' }}>{msg}</div> }
-              </ErrorMessage>
+              </ErrorMessage> */}
               <br/>
               <button type="button" stlye={{ alignSelf: "flex-start"}} onClick={handleAddEvent}>Add Event</button>
             </div>
@@ -156,7 +156,6 @@ return (
             <ErrorMessage name="votesPerTimeslot">
               { msg => <div style={{ color: 'red' }}>{msg}</div> }
             </ErrorMessage>
-
             <br/>
             <label htmlFor="votesPerUser">Number of votes Per User*</label>
             <Field type="number" id="votesPerUser" name="votesPerUser" style = {{width: "10%"}}/>
