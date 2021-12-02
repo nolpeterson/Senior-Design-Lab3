@@ -12,6 +12,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { setEventEvents } from "../utils/events";
 
 const PollSchema = Yup.object().shape({
   title: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
@@ -30,7 +31,7 @@ const PollSchema = Yup.object().shape({
   // endingDate: Yup.string().required('Required'),
 });
 
-const events = [{}]
+const events = []
 const localizer = momentLocalizer(moment)
 
 function Basic() {
@@ -70,12 +71,16 @@ return (
           console.log(values);
           var date = new Date(values.deadline)
           var PollID = await setPoll(date, values.location, values.notes, values.username, values.timezone, values.title, values.votesPerTimeslot, values.votesPerUser, values.numDays, values.numEvents, values.lengthEvents, values.startingDate, values.endingDate)
-          //alert(JSON.stringify(values, null, 2));
+          console.log(allEvents)
           setTimeout(() => {
             console.log(PollID)
             sessionStorage.setItem("PollID",PollID);
+          }, 500);
+          await setEventEvents(allEvents, values.username, values.title)
+          setTimeout(() => {
             navigate('/dashboard')
-          }, 1000);
+          }, 500);
+          
         }}
       > 
       {({ errors, touched, values, setFieldValue }) => (

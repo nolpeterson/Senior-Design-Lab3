@@ -27,6 +27,11 @@ const setEvent = async (datetime, lenght, participant_name, username, title) => 
         owner: username,
         poll: title
     });
+    console.log(userDb.id)
+}
+
+export const setEventEvents = async (events, username, title) => {
+    events.forEach(event => setEvent(event.start, 5, "", username, title))
 }
 
 export const updateEvent = async (ID, name) => {
