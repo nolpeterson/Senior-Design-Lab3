@@ -34,4 +34,10 @@ const getPollID = async (username, title) => {
     snapshot.docs.forEach(doc => {return doc.id})
 }
 
+export const getPoll = async (username, title) => {
+    const snapshot = await firestore.collection('Polls').where('owner_id', '==', `${username}`).where('title', '==', title).get()
+    snapshot.docs.forEach(doc => console.log(doc.data()))
+    return snapshot.docs[0].data()
+}
+
 export {getPolls, setPoll, getPollID}

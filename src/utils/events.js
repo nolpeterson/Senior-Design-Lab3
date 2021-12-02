@@ -31,7 +31,28 @@ const setEvent = async (datetime, lenght, participant_name, username, title) => 
 }
 
 export const setEventEvents = async (events, username, title, num_users) => {
-    events.forEach(event => setEvent(event.start, event.end, "", username, title))
+    for (var i = 0; i < num_users; i++) {
+        events.forEach(event => setEvent(event.start, event.end, "", username, title))
+    }
+}
+
+export const verifyUserEventCount = async (username, poll_title, participant, numOptions) => {
+    console.log(username)
+    console.log(numOptions)
+    var events = await getEventPollID(username, poll_title)
+    console.log(events[0])
+    var count = 1
+    events[0].forEach(event => {
+        if (event.participant_name == participant) {
+            count++
+        }
+    })
+    console.log(count)
+    if (count > numOptions) {
+        return false
+    } else {
+        return true
+    }
 }
 
 export const updateEvent = async (ID, name) => {

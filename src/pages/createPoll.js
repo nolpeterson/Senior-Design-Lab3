@@ -76,7 +76,7 @@ return (
             console.log(PollID)
             sessionStorage.setItem("PollID",PollID);
           }, 500);
-          await setEventEvents(allEvents, values.username, values.title)
+          await setEventEvents(allEvents, values.username, values.title, values.votesPerTimeslot)
           setTimeout(() => {
             navigate('/dashboard')
           }, 500);

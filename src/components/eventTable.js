@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import { useTable } from 'react-table'
 import { getUser } from '../services/auth';
-import { getEventPollID, getEvents, updateEvent } from '../utils/events';
-import { getPollID } from '../utils/polls';
+import { getEventPollID, getEvents, updateEvent, verifyUserEventCount } from '../utils/events';
+import { getPollID, getPoll } from '../utils/polls';
 import { getParameterByName } from '../utils/url';
 import { createDateRange, createDatetime, createUpdatedDateRange } from '../utils/datetime';
 import { Formik, Field, Form, ErrorMessage  } from 'formik';
 
 var globalOwner = ""
 var globalTitle = ""
+var globalUserLimit
 var globalDatetime
 var globalIDs
 
@@ -70,6 +71,10 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
     console.log(await getEvents())
     var title = getParameterByName('title')
     var owner = getParameterByName('owner_id')
+    var user_limit = await getPoll(owner, title)
+    console.log(user_limit)
+    globalUserLimit = user_limit.vote_limit_user
+    console.log(globalUserLimit)
     globalOwner = owner
     globalTitle = title
     console.log(title)
@@ -125,7 +130,13 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
                     console.log(eventID)
                     var participant = values.name
                     console.log(participant)
-                    updateEvent(eventID, participant)
+                    var validator = await verifyUserEventCount(globalOwner, globalTitle, participant, globalUserLimit)
+                    if (validator) {
+                      console.log(true)
+                      updateEvent(eventID, participant)
+                    } else {
+                      console.log(false)
+                    }
                     setTimeout(() => {
                       window.location.reload();
                     }, 200);
