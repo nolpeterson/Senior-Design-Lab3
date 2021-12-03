@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useTable } from 'react-table'
-import { getUser } from '../services/auth';
+import { getUser, isLoggedIn } from '../services/auth';
 import { getEventPollID, getEvents, updateEvent, verifyUserEventCount } from '../utils/events';
-import { getPollID, getPoll } from '../utils/polls';
+import { getPollID, getPoll, verifyDeadline } from '../utils/polls';
 import { getParameterByName } from '../utils/url';
 import { createDateRange, createDatetime, createUpdatedDateRange } from '../utils/datetime';
 import { Formik, Field, Form, ErrorMessage  } from 'formik';
@@ -120,7 +120,8 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
               return (
                 <Formik
                   initialValues={{
-                    name: row.row.values.participant_name
+                    name: row.row.values.participant_name,
+                    datetime: row.row.values.datetime
                   }}
                   onSubmit={async (values) => {
                     console.log(values);
@@ -131,10 +132,14 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
                     var participant = values.name
                     console.log(participant)
                     var validator = await verifyUserEventCount(globalOwner, globalTitle, participant, globalUserLimit)
-                    if (validator) {
+                    var deadlineValidator = await verifyDeadline(globalOwner, globalTitle)
+                    if (!deadlineValidator) { // past deadline
+                      alert(JSON.stringify("It is past the deadline for this poll", null, 2));
+                      console.log('past datetime')
+                    } else if (validator) {
                       console.log(true)
                       updateEvent(eventID, participant)
-                      alert(JSON.stringify( `${participant} has signed up` , null, 2));
+                      alert(JSON.stringify( `${participant} has signed up for ${values.datetime}`, null, 2));
                     } else {
                       console.log(false)
                       alert(JSON.stringify("You have signed up for too many polls!", null, 2));
@@ -147,6 +152,38 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
                   <Form>
                     <Field id="name" name="name" defaultValue={row.row.values.participant_name}/>
                     <button type="submit">Sign Up</button>
+                  </Form>
+                </Formik>
+              )
+            }
+          },
+          {
+            Header: 'Reset',
+            accessor: 'reset',
+            Cell: (row) => {
+              return (
+                <Formik
+                  onSubmit={async (values) => {
+                    console.log(values);
+                    var vals = row.row.id
+                    console.log(vals)
+                    var eventID = globalIDs[vals]
+                    console.log(eventID)
+                    var validator = isLoggedIn()
+                    if (validator) {
+                      console.log(true)
+                      updateEvent(eventID, "")
+                    } else {
+                      console.log(false)
+                      alert(JSON.stringify("You do not have permission to do that", null, 2));
+                    }
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 200);
+                  }}
+                > 
+                  <Form>
+                    <button type="submit">Delete participant</button>
                   </Form>
                 </Formik>
               )

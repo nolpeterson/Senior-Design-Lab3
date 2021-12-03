@@ -34,6 +34,18 @@ const getPollID = async (username, title) => {
     snapshot.docs.forEach(doc => {return doc.id})
 }
 
+export const verifyDeadline = async (username, title) => {
+    var data = await getPoll(username, title)
+    console.log(data.deadline.seconds)
+    console.log(Date.now())
+    console.log(Date.now()/1000 > data.deadline.seconds)
+    if (Date.now()/1000 > data.deadline.seconds) {
+        return false
+    } else {
+        return true
+    }
+}
+
 export const getPoll = async (username, title) => {
     const snapshot = await firestore.collection('Polls').where('owner_id', '==', `${username}`).where('title', '==', title).get()
     snapshot.docs.forEach(doc => console.log(doc.data()))

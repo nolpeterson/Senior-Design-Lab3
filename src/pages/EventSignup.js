@@ -16,7 +16,7 @@ const dashboard = () => (
 
     <br/>
     <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-      <Link to="/dashboard/">Go back to dashboard</Link>
+      <Link to="/dashboard">Go back to dashboard</Link>
     </div>
 
     {/* List of user's polls */}

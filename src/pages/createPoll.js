@@ -13,6 +13,8 @@ import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { setEventEvents } from "../utils/events";
+import emailjs from "emailjs-com";
+import { setInvite } from "../utils/invites";
 
 const PollSchema = Yup.object().shape({
   title: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
@@ -65,6 +67,7 @@ return (
           lengthEvents: '5',
           startingDate: '',
           endingDate: '',
+          emailInvites: '',
         }}
         validationSchema={PollSchema}
         onSubmit={async (values) => {
@@ -80,7 +83,21 @@ return (
           setTimeout(() => {
             navigate('/dashboard')
           }, 500);
-          
+          var emails = values.emailInvites.split(', ')
+          console.log(emails)
+          var url = window.location.href.substr(0, window.location.href.length - 10) + "EventSignup?title=" + values.title + "?owner_id=" +  values.username
+          console.log(url)
+          emails.forEach(email => setInvite(email, values.username, values.title))
+          emails.forEach(email => emailjs.send("service_4da7hz1","template_ixccgdi",{reply_to: email, message: url},"user_C9QFMXD2JTZf0mLcSM271")
+            .then(
+              (result) => {
+                console.log(result.text);
+              },
+              (error) => {
+                console.log(error.text);
+              }
+            )
+          )
         }}
       > 
       {({ errors, touched, values, setFieldValue }) => (
@@ -191,7 +208,7 @@ return (
           <div name = "inviteDiv" style = {{border: "3px solid #eee", borderRadius: "15px", padding: "20px"}}>
             <h3>Step 6:</h3>
             <h4>Send invites to the poll.</h4>
-            <button type="button">Invite Users</button>
+            <Field type="text" id="emailInvites" name="emailInvites"/>
           </div>
           <br/>
 
