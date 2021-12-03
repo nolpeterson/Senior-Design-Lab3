@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useTable } from 'react-table'
 import { getUser, isLoggedIn } from '../services/auth';
 import { getEventPollID, getEvents, updateEvent, verifyUserEventCount } from '../utils/events';
-import { getPollID, getPoll } from '../utils/polls';
+import { getPollID, getPoll, verifyDeadline } from '../utils/polls';
 import { getParameterByName } from '../utils/url';
 import { createDateRange, createDatetime, createUpdatedDateRange } from '../utils/datetime';
 import { Formik, Field, Form, ErrorMessage  } from 'formik';
@@ -132,7 +132,10 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
                     var participant = values.name
                     console.log(participant)
                     var validator = await verifyUserEventCount(globalOwner, globalTitle, participant, globalUserLimit)
-                    if (validator) {
+                    var deadlineValidator = await verifyDeadline(globalOwner, globalTitle)
+                    if (!deadlineValidator) { // past deadline
+                      alert(JSON.stringify("It is past the deadline for this poll", null, 2));
+                    } else if (validator) {
                       console.log(true)
                       updateEvent(eventID, participant)
                       alert(JSON.stringify( `${participant} has signed up for ${values.datetime}`, null, 2));
