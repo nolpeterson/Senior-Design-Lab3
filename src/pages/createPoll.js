@@ -15,6 +15,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { setEventEvents } from "../utils/events";
 import emailjs from "emailjs-com";
 import { setInvite } from "../utils/invites";
+import { test } from "media-typer";
 
 const PollSchema = Yup.object().shape({
   title: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
@@ -35,14 +36,72 @@ const PollSchema = Yup.object().shape({
 
 const events = []
 const localizer = momentLocalizer(moment)
+var globalNum = 1
+var globalMinutes = 5
 
 function Basic() {
   const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
   const [allEvents, setAllEvents] = useState(events);
 
   function handleAddEvent() {
-    setAllEvents([...allEvents, newEvent]);
-}
+    console.log(newEvent)
+    if (globalNum > 1) {
+      console.log('num')
+      var startSeconds = Date.parse(newEvent.start) / 1000
+      var endSeconds = Date.parse(newEvent.end) / 1000
+      var totalTime = (endSeconds - startSeconds) / globalNum
+      console.log(totalTime)
+      for (var i = 0; i < globalNum; i++) {
+        var startDate = new Date(Date.UTC(1970, 0, 1));
+        startDate.setUTCSeconds(startSeconds + i * totalTime)
+        var endDate = new Date(Date.UTC(1970, 0, 1));
+        endDate.setUTCSeconds(startSeconds + (i + 1) * totalTime)
+        var event = {title: `${newEvent.title}-${i}`, start: startDate, end: endDate}
+        console.log(event)
+        if (i != globalNum - 1) {
+          allEvents.push(event)
+          console.log(allEvents)
+        } else {
+          setAllEvents([...allEvents, event]);
+        }
+      }
+    } else if (globalMinutes > 0) {
+      console.log('minutes')
+      var startSeconds = Date.parse(newEvent.start) / 1000
+      var endSeconds = Date.parse(newEvent.end) / 1000
+      var totalRepeats = (endSeconds - startSeconds) / (globalMinutes * 60)
+      var totalTime = (endSeconds - startSeconds) / totalRepeats
+      console.log(totalRepeats)
+      console.log(totalTime)
+      for (var i = 0; i < totalRepeats; i++) {
+        var startDate = new Date(Date.UTC(1970, 0, 1));
+        startDate.setUTCSeconds(startSeconds + i * totalTime)
+        var endDate = new Date(Date.UTC(1970, 0, 1));
+        endDate.setUTCSeconds(startSeconds + (i + 1) * totalTime)
+        var event = {title: `${newEvent.title}-${i}`, start: startDate, end: endDate}
+        console.log(event)
+        if (i != totalRepeats - 1) {
+          allEvents.push(event)
+        } else {
+          setAllEvents([...allEvents, event]);
+        }
+      }
+    } else {
+      setAllEvents([...allEvents, newEvent]);
+    }
+  }
+
+  function updateNum(num) {
+    console.log(num.target.value)
+    globalNum = num.target.value
+    console.log(globalNum)
+  }
+
+  function updateMinutes(minutes) {
+    console.log(minutes.target.value)
+    globalMinutes = minutes.target.value
+    console.log(globalMinutes)
+  }
 
 return (
   <Layout>
@@ -163,6 +222,16 @@ return (
                 { msg => <div style={{ color: 'red' }}>{msg}</div> }
               </ErrorMessage> */}
               <br/>
+              <h5>Events will be used first, to use minutes make sure events is 1</h5>
+              <label htmlFor="splitEvent">Split Event into x Events</label>
+              <Field type="number" name="splitEvent" min="1" placeholder="1"
+                onChange={(num) => updateNum(num)}/>
+              <br/>
+              <br/>
+              <label htmlFor="minuteEvent">Split Event into x minute events</label>
+              <Field type="number" name="minuteEvent" step="5" min="0" placeholder="0"
+                onChange={(minutes) => updateMinutes(minutes)}/>
+              <br/>
               <button type="button" stlye={{ alignSelf: "flex-start"}} onClick={handleAddEvent}>Add Event</button>
             </div>
             <br/>
@@ -174,13 +243,13 @@ return (
             <h3>Step 4:</h3>
             <h4>How many votes do you want users to have?</h4>
             <label htmlFor="votesPerTimeslot">Number of votes Per Timeslot*</label>
-            <Field type="number" id="votesPerTimeslot" name="votesPerTimeslot" style = {{width: "10%"}}/>
+            <Field type="number" id="votesPerTimeslot" min="1" name="votesPerTimeslot" style = {{width: "10%"}}/>
             <ErrorMessage name="votesPerTimeslot">
               { msg => <div style={{ color: 'red' }}>{msg}</div> }
             </ErrorMessage>
             <br/>
             <label htmlFor="votesPerUser">Number of votes Per User*</label>
-            <Field type="number" id="votesPerUser" name="votesPerUser" style = {{width: "10%"}}/>
+            <Field type="number" id="votesPerUser" min="1" name="votesPerUser" style = {{width: "10%"}}/>
             <ErrorMessage name="votesPerUser">
               { msg => <div style={{ color: 'red' }}>{msg}</div> }
             </ErrorMessage>
