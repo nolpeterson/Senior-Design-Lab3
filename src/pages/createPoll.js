@@ -149,7 +149,7 @@ return (
           )
         }}
       > 
-      {({ errors, touched, values, setFieldValue }) => (
+      {({values, setFieldValue }) => (
         <Form>
           <div name = "titleDiv" style = {{display: "flex", flexDirection: "column ", border: "3px solid #eee", borderRadius: "15px", padding: "20px"}}> 
             <h3>Step 1:</h3>
@@ -176,6 +176,7 @@ return (
             <label htmlFor="timezone">Timezone*</label>
             <Field as="select" name="timezone" id="timezone" style = {{width: "25%"}}>
               <option style={{display:"none"}} value="">select a timezone</option>
+              <option value="None">No Timezone</option>
               <option value="Eastern">Eastern(GMT-6)</option>
               <option value="Central">Central(GMT-7)</option>
               <option value="Mountain">Mountain(GMT-8)</option>
@@ -194,35 +195,36 @@ return (
               <label htmlFor="eventTitle">Event Title*</label>
               <br/>
               <input name="eventTitle" type="text" style={{ width: "25%"}} value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
-              {/* <ErrorMessage name="eventTitle">
-                { msg => <div style={{ color: 'red' }}>{msg}</div> }
-              </ErrorMessage> */}
               <br/><br/>
               <label htmlFor="startEvent">Event start date*</label>
               <DatePicker name="startEvent" showTimeSelect dateFormat="MM/dd/yyyy h:mm aa" timeIntervals={5} placeholderText="Choose a start date" selected={newEvent.start} 
                 onChange={(start) => setNewEvent({ ...newEvent, start })} withPortal/>
-              {/* <ErrorMessage name="startEvent">
-                { msg => <div style={{ color: 'red' }}>{msg}</div> }
-              </ErrorMessage> */}
               <br/>
               <label htmlFor="endEvent">Event end date*</label>
               <DatePicker name="endEvent" showTimeSelect dateFormat="MM/dd/yyyy h:mm aa" timeIntervals={5} placeholderText="Choose an end date" selected={newEvent.end} 
                 onChange={(end) => setNewEvent({ ...newEvent, end })} withPortal/>
-              {/* <ErrorMessage name="endEvent">
-                { msg => <div style={{ color: 'red' }}>{msg}</div> }
-              </ErrorMessage> */}
               <br/>
-              <h5>Events will be used first, to use minutes make sure events is 1</h5>
-              <label htmlFor="splitEvent">Split Event into x Events</label>
-              <Field type="number" name="splitEvent" min="1" placeholder="1"
-                onChange={(num) => updateNum(num)}/>
-              <br/>
-              <br/>
-              <label htmlFor="minuteEvent">Split Event into x minute events</label>
-              <Field type="number" name="minuteEvent" step="5" min="0" placeholder="0"
-                onChange={(minutes) => updateMinutes(minutes)}/>
-              <br/>
-              <button type="button" stlye={{ alignSelf: "flex-start"}} onClick={handleAddEvent}>Add Event</button>
+              <div name="eitherOrOption" style = {{overflow: "auto", border: "3px solid #eee", borderRadius: "15px", padding: "20px", marginTop: "10px"}}>
+                <h5>How do you want to split timeslots inside event? <br/>Pick either option below (default "x" timeslots)</h5>
+                <div style={{float: "left"}}>
+                  <label htmlFor="splitEvent">Split Event into "x" timeslots</label>
+                  <br/>
+                  <Field type="number" name="splitEvent" min="1" placeholder="1"
+                    onChange={(num) => updateNum(num)}/>
+                  <br/><br/>
+                </div>
+                <div style={{margin: "15px", float: "center"}}>
+                  <h5>- OR -</h5>
+                </div>
+                <div style={{float: "right"}}>
+                  <label htmlFor="minuteEvent">Split Event into "x" minute timeslots</label>
+                  <br/>
+                  <Field type="number" name="minuteEvent" step="5" min="0" placeholder="0"
+                    onChange={(minutes) => updateMinutes(minutes)}/>  
+                </div>
+              </div>
+              <button class="customButton" style={{marginTop: "20px",width: "150px", textAlign: "center", color: "white", borderRadius: "4px", backgroundColor: "#4682B4"}}
+                type="button" onClick={handleAddEvent}>Add Event</button>
             </div>
             <br/>
             <Calendar localizer={localizer} events={allEvents} startAccessor="start" endAccessor="end" style={{ height: '50vh'}} />
@@ -266,8 +268,8 @@ return (
 
           <div name = "inviteDiv" style = {{border: "3px solid #eee", borderRadius: "15px", padding: "20px"}}>
             <h3>Step 6:</h3>
-            <h4>Send invites to the poll.</h4>
-            <Field type="text" id="emailInvites" name="emailInvites"/>
+            <h4>Send email invites to the poll. <br/>For multiple emails, separate them by a comma.</h4>
+            <Field style={{overflowY: "scroll",resize: "none"}} placeholder="email@example.com, email@example.com" component="textarea" rows="4" cols="35" type="text" id="emailInvites" name="emailInvites"/>
           </div>
           <br/>
 
@@ -275,9 +277,10 @@ return (
             <h3>Step 7:</h3>
             <h4>And on the 7th day, god made this poll, probaly.</h4>
             <div style={{ float: "left"}}> 
-              <button type="submit">Publish Poll</button>
+              <button class="customButton" style={{width: "150px", textAlign: "center", color: "white", borderRadius: "4px", backgroundColor: "#4682B4"}}
+                type="submit">Publish Poll</button>
             </div>
-            <div style={{marginInline:"150px"}}>
+            <div style={{marginInline:"175px"}}>
               <Link to="/dashboard">Cancel Poll</Link>
             </div>
           </div>
