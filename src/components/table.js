@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useTable } from 'react-table'
 import { getUser } from '../services/auth';
 import { getPollsUser } from '../utils/polls';
+import { Link } from "gatsby"
+import Layout from '../components/layout';
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -67,6 +69,32 @@ const [data, setData] = useState([]);
             Header: 'Owner',
             accessor: 'owner_id',
           },
+          {
+          Header: 'Edit',
+          accessor: "Edit Poll",
+          Cell: (row) => {
+          return (
+              <Link to={"/editPoll?title=" + row.row.original['title'] + "?owner_id=" + row.row.original['owner_id']}>
+                <button>
+                  Edit Poll  
+                </button>
+              </Link>
+            )
+          }
+        },
+        {
+          Header: 'Resend Invites',
+          accessor: "resend",
+          Cell: (row) => {
+          return (
+              <Link to={"/editPoll?title=" + row.row.original['title'] + "?owner_id=" + row.row.original['owner_id']}>
+                <button>
+                  Resend Invites 
+                </button>
+              </Link>
+            )
+          }
+        },
         ],
       }
     ],
