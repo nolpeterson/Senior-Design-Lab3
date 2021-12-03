@@ -1,4 +1,4 @@
-import { Login, getUserID } from "../utils/users"
+import { Login } from "../utils/users"
 
 export const isBrowser = () => typeof window !== "undefined"
 
