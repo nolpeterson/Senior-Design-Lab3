@@ -135,6 +135,7 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
                     var deadlineValidator = await verifyDeadline(globalOwner, globalTitle)
                     if (!deadlineValidator) { // past deadline
                       alert(JSON.stringify("It is past the deadline for this poll", null, 2));
+                      console.log('past datetime')
                     } else if (validator) {
                       console.log(true)
                       updateEvent(eventID, participant)
