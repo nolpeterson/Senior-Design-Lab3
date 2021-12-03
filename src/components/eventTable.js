@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useTable } from 'react-table'
-import { isLoggedIn } from '../services/auth';
-import { getEventPollID, getEvents, updateEvent, verifyUserEventCount } from '../utils/events';
-import { getPoll, verifyDeadline } from '../utils/polls';
+import { getUser, isLoggedIn } from '../services/auth';
+import { deleteEvent, getEventPollID, getEvents, updateEvent, verifyUserEventCount } from '../utils/events';
+import { getPollID, getPoll, verifyDeadline } from '../utils/polls';
 import { getParameterByName } from '../utils/url';
 import { createUpdatedDateRange } from '../utils/datetime';
 import { Formik, Field, Form  } from 'formik';
@@ -12,6 +12,8 @@ var globalTitle = ""
 var globalUserLimit
 var globalDatetime
 var globalIDs
+var globalNotes
+var globalLocation
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -74,6 +76,8 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
     var user_limit = await getPoll(owner, title)
     console.log(user_limit)
     globalUserLimit = user_limit.vote_limit_user
+    globalNotes = user_limit.notes
+    globalLocation = user_limit.location
     console.log(globalUserLimit)
     globalOwner = owner
     globalTitle = title
@@ -138,7 +142,7 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
                     } else if (validator) {
                       console.log(true)
                       updateEvent(eventID, participant)
-                      alert(JSON.stringify( `${participant} has signed up for ${values.datetime}`, null, 2));
+                      alert(JSON.stringify( `${participant} has signed up for ${globalTitle} at ${globalLocation} during ${values.datetime} {-} notes: ${globalNotes}`, null, 2));
                     } else {
                       console.log(false)
                       alert(JSON.stringify("You have signed up for too many polls!", null, 2));
@@ -186,6 +190,38 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
                 > 
                   <Form>
                     <button class="customButton" style={{whiteSpace: "nowrap", textAlign: "center", color: "white", borderRadius: "4px", backgroundColor: "#f44336"}} type="submit">Remove participant</button>
+                  </Form>
+                </Formik>
+              )
+            }
+          },
+          {
+            Header: 'Delete',
+            accessor: 'delete',
+            Cell: (row) => {
+              return (
+                <Formik
+                  onSubmit={async (values) => {
+                    console.log(values);
+                    var vals = row.row.id
+                    console.log(vals)
+                    var eventID = globalIDs[vals]
+                    console.log(eventID)
+                    var validator = isLoggedIn()
+                    if (validator) {
+                      console.log(true)
+                      deleteEvent(getUser().username, globalTitle, row.row.id)
+                    } else {
+                      console.log(false)
+                      alert(JSON.stringify("You do not have permission to do that", null, 2));
+                    }
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 200);
+                  }}
+                > 
+                  <Form>
+                    <button type="submit">Delete Event</button>
                   </Form>
                 </Formik>
               )
