@@ -29,9 +29,12 @@ const setPoll = async (deadline, location, notes, username, timezone, title, vot
 }
 
 const getPollID = async (username, title) => {
-    const snapshot = await firestore.collection('Polls').where('owner_id', '==', `${username}`).where('title', '==', title).get()
+    const snapshot = await firestore.collection('Polls').where('owner_id', '==', username).where('title', '==', title).get()
+    console.log(snapshot.docs)
     snapshot.docs.forEach(doc => console.log(doc.id))
-    snapshot.docs.forEach(doc => {return doc.id})
+    var ids = []
+    snapshot.docs.forEach(doc => ids.push(doc.id))
+    return ids[0]
 }
 
 export const verifyDeadline = async (username, title) => {
@@ -52,4 +55,11 @@ export const getPoll = async (username, title) => {
     return snapshot.docs[0].data()
 }
 
-export {getPolls, setPoll, getPollID}
+const deletePoll = async (title, userName) => {
+    console.log(await getPollID(userName, title))
+    console.log(await getPoll(userName, title))
+    const pollToDelete = await getPollID(userName, title)
+    const deletion = await firestore.collection('Polls').doc(pollToDelete).delete();
+}
+
+export {getPolls, setPoll, getPollID, deletePoll}

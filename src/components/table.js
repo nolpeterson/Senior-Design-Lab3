@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { useTable } from 'react-table'
 import { getUser } from '../services/auth';
-import { getPollsUser } from '../utils/polls';
+import { getPollsUser, getPollID, deletePoll } from '../utils/polls';
 import { Link } from "gatsby"
 import Layout from '../components/layout';
+import { resendEmail } from '../utils/invites';
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -63,38 +64,48 @@ const [data, setData] = useState([]);
             Header: 'Poll Name',
             accessor: 'title',
             Cell: e =><a href={"EventSignup?title=" + e.value + "?owner_id=" +  e.row.original['owner_id']}> {e.value}</a>
-
           },
           {
             Header: 'Owner',
             accessor: 'owner_id',
           },
           {
-          Header: 'Edit',
-          accessor: "Edit Poll",
-          Cell: (row) => {
-          return (
-              <Link to={"/editPoll?title=" + row.row.original['title'] + "?owner_id=" + row.row.original['owner_id']}>
-                <button>
-                  Edit Poll  
-                </button>
-              </Link>
-            )
-          }
-        },
-        {
-          Header: 'Resend Invites',
-          accessor: "resend",
-          Cell: (row) => {
-          return (
-              <Link to={"/editPoll?title=" + row.row.original['title'] + "?owner_id=" + row.row.original['owner_id']}>
-                <button>
+            Header: 'Resend Invites',
+            accessor: "resend",
+            Cell: (row) => {
+            return (
+                <button onClick={() => resendEmail(row.row.original['owner_id'], row.row.original['title'])}>
                   Resend Invites 
                 </button>
-              </Link>
-            )
-          }
-        },
+              )
+            }
+          },
+          {
+            Header: 'Edit',
+            accessor: "Edit Poll",
+            Cell: (row) => {
+            return (
+                <Link to={"/editPoll?title=" + row.row.original['title'] + "?owner_id=" + row.row.original['owner_id']}>
+                  <button>
+                    Edit Poll  
+                  </button>
+                </Link>
+              )
+            }
+          },
+          {
+            Header: 'Delete',
+            accessor: "Delete Poll",
+            Cell: (row) => {
+            return (
+                <button onClick={() => 
+                deletePoll(row.row.original['title'], 
+                row.row.original['owner_id'])}>
+                  Delete Poll
+                </button>
+              )
+            }
+          },
         ],
       }
     ],
