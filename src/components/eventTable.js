@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useTable } from 'react-table'
-import { getUser } from '../services/auth';
+import { getUser, isLoggedIn } from '../services/auth';
 import { getEventPollID, getEvents, updateEvent, verifyUserEventCount } from '../utils/events';
 import { getPollID, getPoll } from '../utils/polls';
 import { getParameterByName } from '../utils/url';
@@ -148,6 +148,38 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
                   <Form>
                     <Field id="name" name="name" defaultValue={row.row.values.participant_name}/>
                     <button type="submit">Sign Up</button>
+                  </Form>
+                </Formik>
+              )
+            }
+          },
+          {
+            Header: 'Reset',
+            accessor: 'reset',
+            Cell: (row) => {
+              return (
+                <Formik
+                  onSubmit={async (values) => {
+                    console.log(values);
+                    var vals = row.row.id
+                    console.log(vals)
+                    var eventID = globalIDs[vals]
+                    console.log(eventID)
+                    var validator = isLoggedIn()
+                    if (validator) {
+                      console.log(true)
+                      updateEvent(eventID, "")
+                    } else {
+                      console.log(false)
+                      alert(JSON.stringify("You do not have permission to do that", null, 2));
+                    }
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 200);
+                  }}
+                > 
+                  <Form>
+                    <button type="submit">Delete participant</button>
                   </Form>
                 </Formik>
               )
