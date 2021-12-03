@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useTable } from 'react-table'
 import { getUser, isLoggedIn } from '../services/auth';
-import { getEventPollID, getEvents, updateEvent, verifyUserEventCount } from '../utils/events';
+import { deleteEvent, getEventPollID, getEvents, updateEvent, verifyUserEventCount } from '../utils/events';
 import { getPollID, getPoll, verifyDeadline } from '../utils/polls';
 import { getParameterByName } from '../utils/url';
-import { createDateRange, createDatetime, createUpdatedDateRange } from '../utils/datetime';
-import { Formik, Field, Form, ErrorMessage  } from 'formik';
+import { createUpdatedDateRange } from '../utils/datetime';
+import { Formik, Field, Form  } from 'formik';
 
 var globalOwner = ""
 var globalTitle = ""
@@ -101,9 +101,13 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
             accessor: 'participant_name',
             Cell: participant => {
               if (participant.value == "") {
-                return <input type="text" defaultValue={participant.value}/>
+                return <input placeholder = "Open Slot" 
+                style = {{display: "flex", flexDirection: "column ", border: "3px solid #eee", borderRadius: "15px", padding: "20px"}} 
+                type="text" defaultValue={participant.value}/>
               } else {
-                return <input type="text" defaultValue={participant.value} disabled/>
+                return <input 
+                style = {{display: "flex", flexDirection: "column ", border: "3px solid #eee", borderRadius: "15px", padding: "20px"}} 
+                type="text" defaultValue={participant.value} disabled/>
               }
             }
           },
@@ -112,15 +116,10 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
             accessor: 'datetime'
           },
           {
-            Header: 'Submit',
+            Header: 'Sign up',
             accessor: 'tes',
             Cell: (row) => {
               globalDatetime = row.row.id
-              // return (
-              //   <button onClick={signUp} value={row.row.id + ' ' + row.row.values.participant_name}>
-              //     Sign Up
-              //   </button>
-              // )
               return (
                 <Formik
                   initialValues={{
@@ -153,16 +152,19 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
                     }, 200);
                   }}
                 > 
-                  <Form>
-                    <Field id="name" name="name" defaultValue={row.row.values.participant_name}/>
-                    <button type="submit">Sign Up</button>
+                  <Form style = {{display: "flex", flexDirection: "column ", border: "3px solid #eee", borderRadius: "15px", padding: "20px"}}>
+                    <label htmlFor="name">Name*</label>
+                    <Field style={{width: "150px"}} placeholder="Enter name" id="name" name="name" defaultValue={row.row.values.participant_name}/>
+                    <button class="customButton" 
+                    style={{marginTop: "10px",width: "150px", textAlign: "center", color: "white", borderRadius: "4px", backgroundColor: "#4CAF50"}}
+                    type="submit">Sign Up</button>
                   </Form>
                 </Formik>
               )
             }
           },
           {
-            Header: 'Reset',
+            Header: 'Remove',
             accessor: 'reset',
             Cell: (row) => {
               return (
@@ -187,7 +189,39 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
                   }}
                 > 
                   <Form>
-                    <button type="submit">Delete participant</button>
+                    <button class="customButton" style={{whiteSpace: "nowrap", textAlign: "center", color: "white", borderRadius: "4px", backgroundColor: "#f44336"}} type="submit">Remove participant</button>
+                  </Form>
+                </Formik>
+              )
+            }
+          },
+          {
+            Header: 'Delete',
+            accessor: 'delete',
+            Cell: (row) => {
+              return (
+                <Formik
+                  onSubmit={async (values) => {
+                    console.log(values);
+                    var vals = row.row.id
+                    console.log(vals)
+                    var eventID = globalIDs[vals]
+                    console.log(eventID)
+                    var validator = isLoggedIn()
+                    if (validator) {
+                      console.log(true)
+                      deleteEvent(getUser().username, globalTitle, row.row.id)
+                    } else {
+                      console.log(false)
+                      alert(JSON.stringify("You do not have permission to do that", null, 2));
+                    }
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 200);
+                  }}
+                > 
+                  <Form>
+                    <button type="submit">Delete Event</button>
                   </Form>
                 </Formik>
               )

@@ -1,3 +1,14 @@
+
+.customButton:hover {
+  filter: brightness(85%);
+}
+
+.customButton:focus {
+  filter: brightness(85%);
+  box-shadow: 1px 1px 2px rgb(0, 0, 0);
+  transform: translateY(3px);
+}
+
 html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;

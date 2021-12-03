@@ -15,7 +15,7 @@ const dashboard = () => (
       {/* Create new poll button */}
       <div style={{ float: "right" , marginTop: "10px" }}> 
         <Link to="/createPoll">
-          <button>
+          <button class="customButton" style={{width: "150px", textAlign: "center", color: "white", borderRadius: "4px", backgroundColor: "	#6495ED"}}>
             Create New Poll
           </button>
         </Link>

@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { useTable } from 'react-table'
 import { getUser } from '../services/auth';
-import { getPollsUser, getPollID, deletePoll } from '../utils/polls';
+import { getPollsUser, deletePoll } from '../utils/polls';
 import { Link } from "gatsby"
-import Layout from '../components/layout';
 import { resendEmail } from '../utils/invites';
 
 function Table({ columns, data }) {
@@ -74,7 +73,9 @@ const [data, setData] = useState([]);
             accessor: "resend",
             Cell: (row) => {
             return (
-                <button onClick={() => resendEmail(row.row.original['owner_id'], row.row.original['title'])}>
+                <button class="customButton" style={{width: "150px", textAlign: "center", color: "white", borderRadius: "4px", backgroundColor: "#4682B4"}} 
+                onClick={() => {alert(JSON.stringify("Invites resent", null, 2)) 
+                resendEmail(row.row.original['owner_id'], row.row.original['title'])}}>
                   Resend Invites 
                 </button>
               )
@@ -86,7 +87,7 @@ const [data, setData] = useState([]);
             Cell: (row) => {
             return (
                 <Link to={"/editPoll?title=" + row.row.original['title'] + "?owner_id=" + row.row.original['owner_id']}>
-                  <button>
+                  <button class="customButton" style={{width: "150px", textAlign: "center", color: "white", borderRadius: "4px", backgroundColor: "#4CAF50"}}>
                     Edit Poll  
                   </button>
                 </Link>
@@ -98,9 +99,9 @@ const [data, setData] = useState([]);
             accessor: "Delete Poll",
             Cell: (row) => {
             return (
-                <button onClick={() => 
-                deletePoll(row.row.original['title'], 
-                row.row.original['owner_id'])}>
+                <button class="customButton" style={{width: "150px", textAlign: "center", color: "white", borderRadius: "4px", backgroundColor: "#f44336"}} 
+                onClick={() => {alert(JSON.stringify("Poll deleted", null, 2)) 
+                deletePoll(row.row.original['title'], row.row.original['owner_id'])}}>
                   Delete Poll
                 </button>
               )

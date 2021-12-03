@@ -23,9 +23,9 @@ const Header = ({ siteTitle }) => (
       </div>
 
       {/* Login/Logout button */}
-      <div id="AccountStateButton" style={{ float: "right" , marginTop: "10px" }}> 
+      <div id="AccountStateButton" style={{ float: "right" , marginTop: "10px"}}> 
         <Link to="/loginPage/">
-          <button>
+          <button class="customButton" style={{width: "150px", whiteSpace: "nowrap", textAlign: "center", color: "white", borderRadius: "4px", border: "1px solid #000000", backgroundColor: "grey"}}>
             {accountState}
           </button>
         </Link>
