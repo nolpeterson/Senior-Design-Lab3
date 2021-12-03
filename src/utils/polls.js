@@ -36,9 +36,10 @@ const getPollID = async (username, title) => {
 
 export const verifyDeadline = async (username, title) => {
     var data = await getPoll(username, title)
-    console.log(data.deadline)
-    console.log(Date.now() > data.deadline)
-    if (Date.now() > data.deadline) {
+    console.log(data.deadline.seconds)
+    console.log(Date.now())
+    console.log(Date.now()/1000 > data.deadline.seconds)
+    if (Date.now()/1000 > data.deadline.seconds) {
         return false
     } else {
         return true

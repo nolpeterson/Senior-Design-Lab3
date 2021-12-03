@@ -14,6 +14,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { setEventEvents } from "../utils/events";
 import emailjs from "emailjs-com";
+import { setInvite } from "../utils/invites";
 
 const PollSchema = Yup.object().shape({
   title: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
@@ -86,6 +87,7 @@ return (
           console.log(emails)
           var url = window.location.href.substr(0, window.location.href.length - 10) + "EventSignup?title=" + values.title + "?owner_id=" +  values.username
           console.log(url)
+          emails.forEach(email => setInvite(email, values.username, values.title))
           emails.forEach(email => emailjs.send("service_4da7hz1","template_ixccgdi",{reply_to: email, message: url},"user_C9QFMXD2JTZf0mLcSM271")
             .then(
               (result) => {
