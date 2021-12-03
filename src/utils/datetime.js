@@ -1,7 +1,7 @@
 export function createDatetime(seconds) {
     var t = new Date(Date.UTC(1970, 0, 1));
     t.setUTCSeconds(seconds);
-    return t.toLocaleString();
+    return t;
 }
 
 export function createDateRange(seconds, length) {

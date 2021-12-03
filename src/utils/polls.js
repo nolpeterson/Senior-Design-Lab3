@@ -62,9 +62,9 @@ const deletePoll = async (title, userName) => {
     const deletion = await firestore.collection('Polls').doc(pollToDelete).delete();
 }
 
-export const updatePoll = async (username, title, deadline, location, notes, timezone, vote_limit_options, vote_limit_users) => {
+export const updatePoll = async (deadline, location, notes, username, timezone, title, vote_limit_options, vote_limit_users) => {
     const pollToUpdate = await getPollID(username, title)
-    const pollDb = firestore.collection('events').doc(pollToUpdate)
+    const pollDb = firestore.collection('Polls').doc(pollToUpdate)
     await pollDb.update({
         deadline: deadline,
         location: location,
