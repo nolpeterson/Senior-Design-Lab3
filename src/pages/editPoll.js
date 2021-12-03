@@ -4,16 +4,14 @@ import { Link } from "gatsby"
 import Layout from '../components/layout';
 import * as Yup from 'yup';
 import { getUser } from '../services/auth';
-import { getPoll, getPollID, setPoll, updatePoll } from '../utils/polls';
-import { getUserID } from '../utils/users';
+import { getPoll, updatePoll } from '../utils/polls';
 import { navigate } from '@reach/router';
-import { Calendar , momentLocalizer} from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { getEventPollID, setEventEvents } from "../utils/events";
-import { getParameterByName, returnThing } from "../utils/url";
+import { getEventPollID } from "../utils/events";
+import { getParameterByName } from "../utils/url";
 import { createDatetime } from "../utils/datetime";
 
 const PollSchema = Yup.object().shape({
@@ -21,20 +19,11 @@ const PollSchema = Yup.object().shape({
   location: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
   timezone: Yup.string().required('Required'),
   deadline: Yup.string().required('Required').nullable(),
-  // startEvent: Yup.string().required('Required').nullable(),
-  // endEvent: Yup.string().required('Required').nullable(),
   votesPerTimeslot: Yup.number().required('Required').min(1, 'Minimum votes are 1'),
   votesPerUser: Yup.number().required('Required').min(1, 'Minimum votes are 1'),
-  // eventTitle: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
-  // numDays: Yup.number().required('Required').min(1, 'Minimum days is 1'),
-  // numEvents: Yup.number().required('Required').min(1, 'Minimum events is 1'),
-  // lengthEvents: Yup.number().required('Required').min(5, 'Minimum length is 5 minutes'),
-  // startingDate: Yup.string().required('Required'),
-  // endingDate: Yup.string().required('Required'),
 });
 
 const events = []
-const localizer = momentLocalizer(moment)
 
 function Basic() {
 

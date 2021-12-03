@@ -1,5 +1,4 @@
 import { firestore } from "./firebase"
-import { getUserID } from "./users"
 
 const getPolls = async () => {
     const snapshot = await firestore.collection("Polls").get()

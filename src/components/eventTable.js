@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useTable } from 'react-table'
 import { getUser, isLoggedIn } from '../services/auth';
 import { deleteEvent, getEventPollID, getEvents, updateEvent, verifyUserEventCount } from '../utils/events';
-import { getPollID, getPoll, verifyDeadline } from '../utils/polls';
+import { getPoll, verifyDeadline } from '../utils/polls';
 import { getParameterByName } from '../utils/url';
 import { createUpdatedDateRange } from '../utils/datetime';
 import { Formik, Field, Form  } from 'formik';
