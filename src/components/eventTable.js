@@ -120,7 +120,8 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
               return (
                 <Formik
                   initialValues={{
-                    name: row.row.values.participant_name
+                    name: row.row.values.participant_name,
+                    datetime: row.row.values.datetime
                   }}
                   onSubmit={async (values) => {
                     console.log(values);
@@ -134,7 +135,7 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
                     if (validator) {
                       console.log(true)
                       updateEvent(eventID, participant)
-                      alert(JSON.stringify( `${participant} has signed up` , null, 2));
+                      alert(JSON.stringify( `${participant} has signed up for ${values.datetime}`, null, 2));
                     } else {
                       console.log(false)
                       alert(JSON.stringify("You have signed up for too many polls!", null, 2));
