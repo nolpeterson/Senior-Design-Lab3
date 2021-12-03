@@ -44,8 +44,8 @@ function Basic() {
         setAllEvents([...allEvents, newEvent]);
     }
 
-    const [oldPoll, setOldPoll] = useState({oldPoll});
-    const [oldEvent, setOldEvent] = useState({oldEvent});
+    const [oldPoll, setOldPoll] = useState({});
+    const [oldEvent, setOldEvent] = useState({});
 
 
     React.useEffect(async () => {
