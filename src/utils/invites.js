@@ -1,5 +1,4 @@
 import { firestore } from "./firebase"
-import { getPollID } from "./polls"
 import emailjs from "emailjs-com"
 
 const getInvites = async () => {
