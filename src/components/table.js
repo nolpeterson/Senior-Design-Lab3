@@ -4,6 +4,7 @@ import { getUser } from '../services/auth';
 import { getPollsUser } from '../utils/polls';
 import { Link } from "gatsby"
 import Layout from '../components/layout';
+import { resendEmail } from '../utils/invites';
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -87,11 +88,9 @@ const [data, setData] = useState([]);
           accessor: "resend",
           Cell: (row) => {
           return (
-              <Link to={"/editPoll?title=" + row.row.original['title'] + "?owner_id=" + row.row.original['owner_id']}>
-                <button>
-                  Resend Invites 
-                </button>
-              </Link>
+              <button onClick={() => resendEmail(row.row.original['owner_id'], row.row.original['title'])}>
+                Resend Invites 
+              </button>
             )
           }
         },
