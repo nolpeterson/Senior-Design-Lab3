@@ -101,13 +101,9 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
             accessor: 'participant_name',
             Cell: participant => {
               if (participant.value == "") {
-                return <input placeholder = "Open Slot" 
-                style = {{display: "flex", flexDirection: "column ", border: "3px solid #eee", borderRadius: "15px", padding: "20px"}} 
-                type="text" defaultValue={participant.value}/>
+                return <h5>Open Slot</h5>
               } else {
-                return <input 
-                style = {{display: "flex", flexDirection: "column ", border: "3px solid #eee", borderRadius: "15px", padding: "20px"}} 
-                type="text" defaultValue={participant.value} disabled/>
+                return participant.value
               }
             }
           },
@@ -120,47 +116,92 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
             accessor: 'tes',
             Cell: (row) => {
               globalDatetime = row.row.id
-              return (
-                <Formik
-                  initialValues={{
-                    name: row.row.values.participant_name,
-                    datetime: row.row.values.datetime
-                  }}
-                  onSubmit={async (values) => {
-                    console.log(values);
-                    var vals = row.row.id
-                    console.log(vals)
-                    var eventID = globalIDs[vals]
-                    console.log(eventID)
-                    var participant = values.name
-                    console.log(participant)
-                    var validator = await verifyUserEventCount(globalOwner, globalTitle, participant, globalUserLimit)
-                    var deadlineValidator = await verifyDeadline(globalOwner, globalTitle)
-                    if (!deadlineValidator) { // past deadline
-                      alert(JSON.stringify("It is past the deadline for this poll", null, 2));
-                      console.log('past datetime')
-                    } else if (validator) {
-                      console.log(true)
-                      updateEvent(eventID, participant)
-                      alert(JSON.stringify( `${participant} has signed up for ${globalTitle} at ${globalLocation} during ${values.datetime} {-} notes: ${globalNotes}`, null, 2));
-                    } else {
-                      console.log(false)
-                      alert(JSON.stringify("You have signed up for too many polls!", null, 2));
-                    }
-                    setTimeout(() => {
-                      window.location.reload();
-                    }, 200);
-                  }}
-                > 
-                  <Form style = {{display: "flex", flexDirection: "column ", border: "3px solid #eee", borderRadius: "15px", padding: "20px"}}>
-                    <label htmlFor="name">Name*</label>
-                    <Field style={{width: "150px"}} placeholder="Enter name" id="name" name="name" defaultValue={row.row.values.participant_name}/>
-                    <button class="customButton" 
-                    style={{marginTop: "10px",width: "150px", textAlign: "center", color: "white", borderRadius: "4px", backgroundColor: "#4CAF50"}}
-                    type="submit">Sign Up</button>
-                  </Form>
-                </Formik>
-              )
+              if (row.row.values.participant_name == "") {
+                return (
+                  <Formik
+                    initialValues={{
+                      name: row.row.values.participant_name,
+                      datetime: row.row.values.datetime
+                    }}
+                    onSubmit={async (values) => {
+                      console.log(values);
+                      var vals = row.row.id
+                      console.log(vals)
+                      var eventID = globalIDs[vals]
+                      console.log(eventID)
+                      var participant = values.name
+                      console.log(participant)
+                      var validator = await verifyUserEventCount(globalOwner, globalTitle, participant, globalUserLimit)
+                      var deadlineValidator = await verifyDeadline(globalOwner, globalTitle)
+                      if (!deadlineValidator) { // past deadline
+                        alert(JSON.stringify("It is past the deadline for this poll", null, 2));
+                        console.log('past datetime')
+                      } else if (validator) {
+                        console.log(true)
+                        updateEvent(eventID, participant)
+                        alert(JSON.stringify( `${participant} has signed up for ${globalTitle} at ${globalLocation} during ${values.datetime} {-} notes: ${globalNotes}`, null, 2));
+                      } else {
+                        console.log(false)
+                        alert(JSON.stringify("You have signed up for too many polls!", null, 2));
+                      }
+                      setTimeout(() => {
+                        window.location.reload();
+                      }, 200);
+                    }}
+                  > 
+                    <Form style = {{display: "flex", flexDirection: "column ", border: "3px solid #eee", borderRadius: "15px", padding: "20px"}}>
+                      <label htmlFor="name">Name*</label>
+                      <Field style={{width: "150px"}} placeholder="Enter name" id="name" name="name" defaultValue={row.row.values.participant_name}/>
+                      <button class="customButton" 
+                      style={{marginTop: "10px",width: "150px", textAlign: "center", color: "white", borderRadius: "4px", backgroundColor: "#4CAF50"}}
+                      type="submit">Sign Up</button>
+                    </Form>
+                  </Formik>
+                )
+              } else {
+                return (
+                  <Formik
+                    initialValues={{
+                      name: row.row.values.participant_name,
+                      datetime: row.row.values.datetime
+                    }}
+                    onSubmit={async (values) => {
+                      console.log(values);
+                      var vals = row.row.id
+                      console.log(vals)
+                      var eventID = globalIDs[vals]
+                      console.log(eventID)
+                      var participant = values.name
+                      console.log(participant)
+                      var validator = await verifyUserEventCount(globalOwner, globalTitle, participant, globalUserLimit)
+                      var deadlineValidator = await verifyDeadline(globalOwner, globalTitle)
+                      if (!deadlineValidator) { // past deadline
+                        alert(JSON.stringify("It is past the deadline for this poll", null, 2));
+                        console.log('past datetime')
+                      } else if (validator) {
+                        console.log(true)
+                        updateEvent(eventID, participant)
+                        alert(JSON.stringify( `${participant} has signed up for ${globalTitle} at ${globalLocation} during ${values.datetime} {-} notes: ${globalNotes}`, null, 2));
+                      } else {
+                        console.log(false)
+                        alert(JSON.stringify("You have signed up for too many polls!", null, 2));
+                      }
+                      setTimeout(() => {
+                        window.location.reload();
+                      }, 200);
+                    }}
+                  > 
+                    <Form style = {{display: "flex", flexDirection: "column ", border: "3px solid #eee", borderRadius: "15px", padding: "20px"}}>
+                      <label htmlFor="name">Name*</label>
+                      <Field style={{width: "150px"}} placeholder="Enter name" id="name" name="name" defaultValue={row.row.values.participant_name} disabled/>
+                      <button class="customButton" 
+                      style={{marginTop: "10px",width: "150px", textAlign: "center", color: "white", borderRadius: "4px", backgroundColor: "#4CAF50"}}
+                      type="submit" disabled>Sign Up</button>
+                    </Form>
+                  </Formik>
+                )
+              }
+              
             }
           },
           {
