@@ -12,6 +12,8 @@ var globalTitle = ""
 var globalUserLimit
 var globalDatetime
 var globalIDs
+var globalNotes
+var globalLocation
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -74,6 +76,8 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
     var user_limit = await getPoll(owner, title)
     console.log(user_limit)
     globalUserLimit = user_limit.vote_limit_user
+    globalNotes = user_limit.notes
+    globalLocation = user_limit.location
     console.log(globalUserLimit)
     globalOwner = owner
     globalTitle = title
@@ -139,7 +143,7 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
                     } else if (validator) {
                       console.log(true)
                       updateEvent(eventID, participant)
-                      alert(JSON.stringify( `${participant} has signed up for ${values.datetime}`, null, 2));
+                      alert(JSON.stringify( `${participant} has signed up for ${globalTitle} at ${globalLocation} during ${values.datetime} {-} notes: ${globalNotes}`, null, 2));
                     } else {
                       console.log(false)
                       alert(JSON.stringify("You have signed up for too many polls!", null, 2));
