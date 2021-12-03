@@ -263,7 +263,7 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
                 > 
                   <Form>
                     <button type="submit" class="customButton" style={{width: "150px", textAlign: "center", color: "white", borderRadius: "4px", backgroundColor: "#f44336"}} 
-                    onClick={() => {alert(JSON.stringify("Poll deleted", null, 2))}}>
+                    onClick={() => {alert(JSON.stringify("Event deleted", null, 2))}}>
                     Delete Event
                     </button>
                   </Form>
