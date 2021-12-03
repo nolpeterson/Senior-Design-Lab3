@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useTable } from 'react-table'
 import { getUser, isLoggedIn } from '../services/auth';
-import { getEventPollID, getEvents, updateEvent, verifyUserEventCount } from '../utils/events';
+import { deleteEvent, getEventPollID, getEvents, updateEvent, verifyUserEventCount } from '../utils/events';
 import { getPollID, getPoll, verifyDeadline } from '../utils/polls';
 import { getParameterByName } from '../utils/url';
 import { createDateRange, createDatetime, createUpdatedDateRange } from '../utils/datetime';
@@ -188,6 +188,38 @@ const signUp = e => { // e.target.value = i " " participant_name: "0 Dean"
                 > 
                   <Form>
                     <button type="submit">Delete participant</button>
+                  </Form>
+                </Formik>
+              )
+            }
+          },
+          {
+            Header: 'Delete',
+            accessor: 'delete',
+            Cell: (row) => {
+              return (
+                <Formik
+                  onSubmit={async (values) => {
+                    console.log(values);
+                    var vals = row.row.id
+                    console.log(vals)
+                    var eventID = globalIDs[vals]
+                    console.log(eventID)
+                    var validator = isLoggedIn()
+                    if (validator) {
+                      console.log(true)
+                      deleteEvent(getUser().username, globalTitle, row.row.id)
+                    } else {
+                      console.log(false)
+                      alert(JSON.stringify("You do not have permission to do that", null, 2));
+                    }
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 200);
+                  }}
+                > 
+                  <Form>
+                    <button type="submit">Delete Event</button>
                   </Form>
                 </Formik>
               )

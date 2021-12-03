@@ -62,4 +62,11 @@ export const updateEvent = async (ID, name) => {
     await eventDb.update({participant_name: name})
 }
 
+export const deleteEvent = async (username, title, index) => {
+    var eventToDelete = await getEventPollID(username, title)
+    eventToDelete = (eventToDelete[1][index])
+    console.log(eventToDelete)
+    const deletion = await firestore.collection('events').doc(eventToDelete).delete();
+}
+
 export {getEvents, setEvent}
