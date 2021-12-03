@@ -7,7 +7,7 @@ const dashboard = () => (
   <Layout>
       <div style={{margin: `0 auto`,maxWidth: 960}}>
 
-      {/* "My Polls Text" */}
+      {/* "Signup text" */}
       <div style={{ float: "left" }}>
         <h1>Signup</h1>
       </div>
@@ -16,10 +16,10 @@ const dashboard = () => (
 
     <br/>
     <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-      <Link to="/dashboard">Go back to dashboard</Link>
+      <Link style= {{marginTop: "20px"}} to="/dashboard">Go back to dashboard</Link>
     </div>
 
-    {/* List of user's polls */}
+    {/* List of events on a poll */}
     <div>
       <Table></Table>
     </div>
