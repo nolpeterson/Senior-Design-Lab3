@@ -12,8 +12,9 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { setEventEvents } from "../utils/events";
-import { getParameterByName } from "../utils/url";
+import { getEventPollID, setEventEvents } from "../utils/events";
+import { getParameterByName, returnThing } from "../utils/url";
+import { createDatetime } from "../utils/datetime";
 
 const PollSchema = Yup.object().shape({
   title: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
@@ -43,13 +44,20 @@ function Basic() {
         setAllEvents([...allEvents, newEvent]);
     }
 
-    const [oldPoll, setOldPoll] = useState();
-    
+    const [oldPoll, setOldPoll] = useState({oldPoll});
+    const [oldEvent, setOldEvent] = useState({oldEvent});
+
+
     React.useEffect(async () => {
-    var temp = await getPoll(getParameterByName('owner_id'), getParameterByName('title'))
-    setOldPoll(temp)
+    var tempPoll = await getPoll(getParameterByName('owner_id'), getParameterByName('title'))
+    var tempEvent = await getEventPollID(getParameterByName('owner_id'), getParameterByName('title'))
+    setOldPoll(tempPoll)
+    setOldEvent(tempEvent)
     }, [])
-    console.log(oldPoll['title'])
+
+    console.log(oldPoll)
+    console.log(oldEvent)
+
 
     return (
     <Layout>
@@ -57,29 +65,25 @@ function Basic() {
         <h6>* indicates required field.</h6>
         <div style={{display: "flex", justifyContent: 'center', alignItems: 'center',}}>
         <Formik
+            enableReinitialize
             initialValues={{
             username: getUser().username,
-            title: ``,
-            location: '',
-            notes: '',
-            timezone: '',
+            title: oldPoll.title,
+            location: oldPoll.location,
+            notes: oldPoll.notes,
+            timezone: oldPoll.timezone,
             deadline: '',
             endEvent: '',
             startEvent: '',
-            eventTitle: '',
-            votesPerTimeslot: '',
-            votesPerUser: '',
-            numDays: '1',
-            numEvents: '1',
-            lengthEvents: '5',
-            startingDate: '',
-            endingDate: '',
+            eventTitle: oldEvent.title,
+            votesPerTimeslot: oldPoll.vote_limit_options,
+            votesPerUser: oldPoll.vote_limit_user,
             }}
             validationSchema={PollSchema}
             onSubmit={async (values) => {
             console.log(values);
             var date = new Date(values.deadline)
-            var PollID = await setPoll(date, values.location, values.notes, values.username, values.timezone, values.title, values.votesPerTimeslot, values.votesPerUser, values.numDays, values.numEvents, values.lengthEvents, values.startingDate, values.endingDate)
+            var PollID = await setPoll(date, values.location, values.notes, values.username, values.timezone, values.title, values.votesPerTimeslot, values.votesPerUser)
             console.log(allEvents)
             setTimeout(() => {
                 console.log(PollID)
