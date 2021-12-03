@@ -61,7 +61,7 @@ function Basic() {
 
     return (
     <Layout>
-        <h1>Create Poll</h1>
+        <h1>Edit Poll</h1>
         <h6>* indicates required field.</h6>
         <div style={{display: "flex", justifyContent: 'center', alignItems: 'center',}}>
         <Formik
